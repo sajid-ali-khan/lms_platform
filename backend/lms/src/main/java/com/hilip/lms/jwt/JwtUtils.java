@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.security.Key;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 @Component
@@ -37,7 +39,8 @@ public class JwtUtils {
         return Jwts.builder()
                 .subject(username)
                 .issuedAt(new Date())
-                .expiration(new Date((new Date()).getTime() + jwtExpirationMs))
+//                .expiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .expiration(Date.from(LocalDate.now().plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant()))
                 .signWith(key())
                 .compact();
     }

@@ -22,6 +22,15 @@ public class GlobalExceptionHandler {
                 ));
     }
 
+    @ExceptionHandler({EmptyRequestBodyException.class})
+    public ResponseEntity<?> handleEmptyRequestBody(Exception ex){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(Map.of(
+                        "success", false,
+                        "message", ex.getMessage()
+                ));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleGeneric(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

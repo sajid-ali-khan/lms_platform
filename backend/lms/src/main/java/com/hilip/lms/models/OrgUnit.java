@@ -2,7 +2,11 @@ package com.hilip.lms.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Data
@@ -25,4 +29,7 @@ public class OrgUnit {
     @ManyToOne
     @JoinColumn
     private Tenant tenant;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    private Map<String, String> attributes = new HashMap<>();
 }
