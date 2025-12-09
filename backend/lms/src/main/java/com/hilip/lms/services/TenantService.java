@@ -1,18 +1,23 @@
 package com.hilip.lms.services;
 
+import com.hilip.lms.dtos.OrgUnitTypeResponse;
 import com.hilip.lms.dtos.TenantCreateDto;
+import com.hilip.lms.exceptions.ResourceNotFoundException;
 import com.hilip.lms.models.Tenant;
 import com.hilip.lms.models.TenantCategory;
+import com.hilip.lms.repositories.OrgUnitTypeRepository;
 import com.hilip.lms.repositories.TenantRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
 public class TenantService {
     private final TenantRepository tenantRepository;
+    private final OrgUnitTypeRepository orgUnitTypeRepository;
 
     public Tenant createTenant(TenantCreateDto dto) {
         Tenant tenant = new Tenant();
@@ -23,5 +28,20 @@ public class TenantService {
 
     public List<Tenant> getAllTenants() {
         return tenantRepository.findAll();
+    }
+
+    public List<OrgUnitTypeResponse> getTenantStructure(String tenantId) {
+        if (!tenantRepository.existsById(UUID.fromString(tenantId))){
+            throw new ResourceNotFoundException("Tenant with id " + tenantId + " not found");
+        }
+        return orgUnitTypeRepository.findByTenantId(UUID.fromString(tenantId)).stream()
+                .map(orgUnitType -> {
+                    return new OrgUnitTypeResponse(
+                            orgUnitType.getId().toString(),
+                            orgUnitType.getName(),
+                            orgUnitType.getLevel()
+                    );
+                })
+                .toList();
     }
 }
