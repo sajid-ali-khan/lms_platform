@@ -16,7 +16,7 @@ public class Course {
     @Column(nullable = false)
     private String title;
 
-    @Column(columnDefinition = "TEXT")
+    @Column(length = 2000)
     private String description;
 
     private String code; // Course code like "CS101"
