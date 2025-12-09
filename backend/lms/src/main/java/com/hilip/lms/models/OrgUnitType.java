@@ -19,7 +19,10 @@ public class OrgUnitType {
     @ManyToOne
     private OrgUnitType parentType;
 
-    @JoinColumn
+    @JoinColumn(nullable = false)
     @ManyToOne
     private Tenant tenant;
+
+    @Column(nullable = false, name = "level_index")
+    private Integer level;
 }
