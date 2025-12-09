@@ -8,4 +8,5 @@ public final class JwtResponse {
     private final String type;
     private final String username;
     private final String role;
+    private final String tenantId;
 }

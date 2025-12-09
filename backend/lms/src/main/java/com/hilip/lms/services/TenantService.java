@@ -9,6 +9,8 @@ import com.hilip.lms.repositories.TenantRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class TenantService {
@@ -20,5 +22,11 @@ public class TenantService {
         tenant.setName(dto.name());
         tenant.setCategory(TenantCategory.valueOf(dto.category()));
         return dtoMapper.mapTenantToTenantResponse(tenantRepository.save(tenant));
+    }
+
+    public List<TenantResponse> getAllTenants() {
+        return tenantRepository.findAll().stream()
+                .map(dtoMapper::mapTenantToTenantResponse)
+                .toList();
     }
 }
