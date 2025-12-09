@@ -2,24 +2,38 @@ package com.hilip.lms.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import org.jspecify.annotations.Nullable;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 @Data
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
-    String username;
-    String passwordHash;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
 
+    @Column(nullable = false)
+    private String username;
+
+    @Column(nullable = false)
+    private String email;
+
+    private String fullName;
+
+    @Column(nullable = false)
+    private String passwordHash;
+
+    @ManyToOne
+    @JoinColumn
+    private Tenant tenant;
+
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     UserRole role;
 
@@ -29,7 +43,7 @@ public class User implements UserDetails {
     }
 
     @Override
-    public @Nullable String getPassword() {
+    public String getPassword() {
         return this.passwordHash;
     }
 }
