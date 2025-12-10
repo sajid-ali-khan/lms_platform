@@ -5,9 +5,7 @@ import lombok.Data;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Data
 @Entity
@@ -32,4 +30,7 @@ public class OrgUnit {
 
     @JdbcTypeCode(SqlTypes.JSON)
     private Map<String, String> attributes = new HashMap<>();
+
+    @OneToMany(mappedBy = "parentUnit", cascade = CascadeType.REMOVE)
+    private List<OrgUnit> childUnits = new ArrayList<>();
 }

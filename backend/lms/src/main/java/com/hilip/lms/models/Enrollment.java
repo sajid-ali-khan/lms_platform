@@ -15,7 +15,7 @@ public class Enrollment {
 
     @ManyToOne
     @JoinColumn(nullable = false)
-    private User user;
+    private User learner;
 
     @ManyToOne
     @JoinColumn(nullable = false)

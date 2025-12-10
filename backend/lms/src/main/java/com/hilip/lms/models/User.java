@@ -6,6 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -46,4 +47,13 @@ public class User implements UserDetails {
     public String getPassword() {
         return this.passwordHash;
     }
+
+    @OneToMany(mappedBy = "instructor", cascade = CascadeType.REMOVE)
+    private List<Course> instructedCourses;
+
+    @OneToMany(mappedBy = "learner", cascade = CascadeType.REMOVE)
+    private List<Enrollment> enrollments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+    private List<UserOrgUnit> orgUnits = new ArrayList<>();
 }

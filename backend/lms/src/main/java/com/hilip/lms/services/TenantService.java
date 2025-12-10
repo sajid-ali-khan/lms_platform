@@ -40,18 +40,5 @@ public class TenantService {
         )).toList();
     }
 
-    public List<OrgUnitTypeResponse> getTenantStructure(String tenantId) {
-        if (!tenantRepository.existsById(UUID.fromString(tenantId))){
-            throw new ResourceNotFoundException("Tenant with id " + tenantId + " not found");
-        }
-        return orgUnitTypeRepository.findByTenantId(UUID.fromString(tenantId)).stream()
-                .map(orgUnitType -> {
-                    return new OrgUnitTypeResponse(
-                            orgUnitType.getId().toString(),
-                            orgUnitType.getName(),
-                            orgUnitType.getLevel()
-                    );
-                })
-                .toList();
-    }
+
 }

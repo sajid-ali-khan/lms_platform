@@ -26,6 +26,6 @@ public class OrgUnitTypeController {
 
     @GetMapping
     public ResponseEntity<?> getTenantStructure(@RequestParam String tenantId){
-        return ResponseEntity.ok(tenantService.getTenantStructure(tenantId));
+        return ResponseEntity.ok(orgUnitTypeService.getTenantStructure(tenantId));
     }
 }

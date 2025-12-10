@@ -3,6 +3,8 @@ package com.hilip.lms.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -23,4 +25,16 @@ public class Tenant {
     @JoinColumn(name = "admin_user_id")
     @OneToOne
     private User admin = null;
+
+    @OneToMany(mappedBy = "tenant", cascade = CascadeType.REMOVE)
+    private List<OrgUnitType> orgUnitTypes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "tenant", cascade = CascadeType.REMOVE)
+    private List<OrgUnit> orgUnits = new ArrayList<>();
+
+    @OneToMany(mappedBy = "tenant", cascade = CascadeType.REMOVE)
+    private List<User> users = new ArrayList<>();
+
+    @OneToMany(mappedBy = "tenant", cascade = CascadeType.REMOVE)
+    private List<Course> courses = new ArrayList<>();
 }

@@ -3,6 +3,8 @@ package com.hilip.lms.models;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -25,4 +27,12 @@ public class OrgUnitType {
 
     @Column(nullable = false, name = "level_index")
     private Integer level;
+
+    @OneToMany(mappedBy = "type", cascade = CascadeType.REMOVE)
+    private List<OrgUnit> orgUnits = new ArrayList<>();
+
+    @OneToOne(mappedBy = "parentType", cascade = CascadeType.REMOVE)
+    private OrgUnitType childType;
+
+
 }

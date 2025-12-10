@@ -3,6 +3,8 @@ package com.hilip.lms.models;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -39,5 +41,14 @@ public class Course {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE)
+    private List<Module> modules = new ArrayList<>();
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE)
+    private List<Enrollment> enrollments = new ArrayList<>(); // all enrollments for this course(super set to courseAllocations)
+
+    @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE)
+    private List<CourseAllocation> courseAllocations = new ArrayList<>(); // made must for students
 }
 

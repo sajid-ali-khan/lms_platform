@@ -13,11 +13,13 @@ public class UserOrgUnit {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @OneToOne
-    @JoinColumn
+    @ManyToOne
+    @JoinColumn(nullable = false)
     private User user;
 
-    @OneToOne
-    @JoinColumn(name = "org_unit_id")
+    @ManyToOne
+    @JoinColumn(nullable = false)
     private OrgUnit orgUnit;
+
+    private boolean isPrimary;
 }
