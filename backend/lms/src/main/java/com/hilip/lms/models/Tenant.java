@@ -19,4 +19,7 @@ public class Tenant {
 
     @Column(nullable = false)
     private String name;
+
+    @OneToOne(mappedBy = "tenant", cascade = CascadeType.REMOVE)
+    private User admin = null;
 }

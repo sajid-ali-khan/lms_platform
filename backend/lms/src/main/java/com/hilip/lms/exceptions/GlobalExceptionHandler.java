@@ -40,6 +40,15 @@ public class GlobalExceptionHandler {
                 ));
     }
 
+    @ExceptionHandler({DataAlreadyExistsException.class})
+    public ResponseEntity<?> handleDataAlreadyExistsException(Exception ex){
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Map.of(
+                        "success", false,
+                        "message", ex.getMessage()
+                ));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleGeneric(Exception ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

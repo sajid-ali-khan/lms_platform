@@ -2,6 +2,7 @@ package com.hilip.lms.services;
 
 import com.hilip.lms.dtos.OrgUnitTypeResponse;
 import com.hilip.lms.dtos.TenantCreateDto;
+import com.hilip.lms.exceptions.DataAlreadyExistsException;
 import com.hilip.lms.exceptions.ResourceNotFoundException;
 import com.hilip.lms.models.Tenant;
 import com.hilip.lms.models.TenantCategory;
@@ -20,6 +21,9 @@ public class TenantService {
     private final OrgUnitTypeRepository orgUnitTypeRepository;
 
     public Tenant createTenant(TenantCreateDto dto) {
+        if (tenantRepository.existsByNameIgnoreCase(dto.name())) {
+            throw new DataAlreadyExistsException("Tenant with name " + dto.name() + " already exists");
+        }
         Tenant tenant = new Tenant();
         tenant.setName(dto.name());
         tenant.setCategory(TenantCategory.valueOf(dto.category()));

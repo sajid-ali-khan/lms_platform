@@ -21,9 +21,4 @@ public class TenantController {
     public ResponseEntity<?> getAllTenants(){
         return ResponseEntity.ok(tenantService.getAllTenants());
     }
-
-    @GetMapping("/structure")
-    public ResponseEntity<?> getTenantStructure(@RequestParam String tenantId){
-        return ResponseEntity.ok(tenantService.getTenantStructure(tenantId));
-    }
 }
