@@ -14,7 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Slf4j
@@ -43,6 +46,11 @@ public class UserService {
         newUser.setTenant(tenant);
 
         userRepository.save(newUser);
+
+        if (newUser.getRole() == UserRole.ADMIN){
+            tenant.setAdmin(newUser);
+            tenantRepository.save(tenant);
+        }
         log.info("Created new user with id: {}", newUser.getId());
 
         return new UserResponse(
@@ -52,5 +60,30 @@ public class UserService {
                 newUser.getEmail(),
                 newUser.getRole().name()
         );
+    }
+
+    public UserResponse getUserById(String id){
+        User user = userRepository.findById(UUID.fromString(id))
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + id));
+        return new UserResponse(
+                user.getId().toString(),
+                user.getUsername(),
+                user.getFullName(),
+                user.getEmail(),
+                user.getRole().name()
+        );
+    }
+
+    public Iterable<UserResponse> getAllUsersOfTenant(String tenantId){
+        Tenant tenant = tenantRepository.findById(UUID.fromString(tenantId))
+                .orElseThrow(() -> new ResourceNotFoundException("Tenant not found with id: " + tenantId));
+        List<User> users = userRepository.findAllByTenant(tenant);
+        return users.stream().map(user -> new UserResponse(
+                user.getId().toString(),
+                user.getUsername(),
+                user.getFullName(),
+                user.getEmail(),
+                user.getRole().name()
+        )).toList();
     }
 }

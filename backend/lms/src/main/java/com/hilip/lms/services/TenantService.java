@@ -2,6 +2,7 @@ package com.hilip.lms.services;
 
 import com.hilip.lms.dtos.OrgUnitTypeResponse;
 import com.hilip.lms.dtos.TenantCreateDto;
+import com.hilip.lms.dtos.TenantResponse;
 import com.hilip.lms.exceptions.DataAlreadyExistsException;
 import com.hilip.lms.exceptions.ResourceNotFoundException;
 import com.hilip.lms.models.Tenant;
@@ -30,8 +31,13 @@ public class TenantService {
         return tenantRepository.save(tenant);
     }
 
-    public List<Tenant> getAllTenants() {
-        return tenantRepository.findAll();
+    public List<TenantResponse> getAllTenants() {
+        return tenantRepository.findAll().stream().map(tenant ->new TenantResponse(
+                tenant.getId().toString(),
+                tenant.getName(),
+                tenant.getCategory().name(),
+                tenant.getAdmin().getFullName()
+        )).toList();
     }
 
     public List<OrgUnitTypeResponse> getTenantStructure(String tenantId) {

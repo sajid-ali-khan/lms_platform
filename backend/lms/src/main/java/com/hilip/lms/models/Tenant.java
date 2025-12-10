@@ -20,6 +20,7 @@ public class Tenant {
     @Column(nullable = false)
     private String name;
 
-    @OneToOne(mappedBy = "tenant", cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "admin_user_id")
+    @OneToOne
     private User admin = null;
 }
