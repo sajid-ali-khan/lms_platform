@@ -28,7 +28,7 @@ public class UserService {
         Tenant tenant = tenantRepository.findById(UUID.fromString(request.tenantId()))
                 .orElseThrow(() -> new ResourceNotFoundException("Tenant not found with id: " + request.tenantId()));
 
-        if (tenant.getAdmin() != null){
+        if (request.role().equals("ADMIN") && tenant.getAdmin() != null){
             throw new DataAlreadyExistsException("Tenant already has an admin user: " + tenant.getAdmin().getUsername());
         }
         if (userRepository.existsByUsername(request.username())){
