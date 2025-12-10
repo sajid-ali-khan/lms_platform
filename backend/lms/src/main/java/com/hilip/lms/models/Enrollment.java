@@ -21,6 +21,10 @@ public class Enrollment {
     @JoinColumn(nullable = false)
     private Course course;
 
+    @ManyToOne
+    @JoinColumn(name = "course_allocation_id")
+    private CourseAllocation courseAllocation;
+
     @Column(nullable = false)
     private LocalDateTime enrolledAt;
 
