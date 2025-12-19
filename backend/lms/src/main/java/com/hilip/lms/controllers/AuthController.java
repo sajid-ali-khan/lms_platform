@@ -1,7 +1,7 @@
 package com.hilip.lms.controllers;
 
-import com.hilip.lms.dtos.JwtResponse;
-import com.hilip.lms.dtos.LoginRequest;
+import com.hilip.lms.dtos.auth.JwtResponse;
+import com.hilip.lms.dtos.auth.LoginRequest;
 import com.hilip.lms.exceptions.EmptyRequestBodyException;
 import com.hilip.lms.services.AuthService;
 import lombok.AllArgsConstructor;

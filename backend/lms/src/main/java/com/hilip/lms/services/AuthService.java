@@ -1,7 +1,7 @@
 package com.hilip.lms.services;
 
-import com.hilip.lms.dtos.JwtResponse;
-import com.hilip.lms.dtos.LoginRequest;
+import com.hilip.lms.dtos.auth.JwtResponse;
+import com.hilip.lms.dtos.auth.LoginRequest;
 import com.hilip.lms.jwt.JwtUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;

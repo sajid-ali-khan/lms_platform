@@ -1,10 +1,10 @@
-package com.hilip.lms.dtos;
+package com.hilip.lms.dtos.user;
 
-public record CreateUserRequest(
+public record UserResponse(
+        String id,
         String username,
         String fullName,
         String email,
-        String password,
         String role
 ) {
 }

@@ -1,4 +1,4 @@
-package com.hilip.lms.dtos;
+package com.hilip.lms.dtos.tenant;
 
 public record TenantResponse (
         String id,

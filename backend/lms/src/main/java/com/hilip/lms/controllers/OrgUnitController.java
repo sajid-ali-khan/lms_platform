@@ -1,6 +1,6 @@
 package com.hilip.lms.controllers;
 
-import com.hilip.lms.dtos.CreateOrgUnitRequest;
+import com.hilip.lms.dtos.orgUnit.CreateOrgUnitRequest;
 import com.hilip.lms.services.OrgUnitService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,5 +23,15 @@ public class OrgUnitController {
         log.info("OrgUnitDto: {}", request);
         orgUnitService.createOrgUnit(tenantId, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @GetMapping
+    public ResponseEntity<?> getOrgUnits(
+            @PathVariable("tenantId") String tenantId,
+            @RequestParam String orgUnitTypeId
+    ) {
+        log.info("Fetching org units for tenantId: {}", tenantId);
+        var orgUnits = orgUnitService.getOrgUnitsByOrgUnitTypeId(tenantId, orgUnitTypeId);
+        return ResponseEntity.ok(orgUnits);
     }
 }

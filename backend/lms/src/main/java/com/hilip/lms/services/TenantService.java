@@ -1,7 +1,7 @@
 package com.hilip.lms.services;
 
-import com.hilip.lms.dtos.TenantCreateDto;
-import com.hilip.lms.dtos.TenantResponse;
+import com.hilip.lms.dtos.tenant.TenantCreateDto;
+import com.hilip.lms.dtos.tenant.TenantResponse;
 import com.hilip.lms.exceptions.DataAlreadyExistsException;
 import com.hilip.lms.helper.AutoMapper;
 import com.hilip.lms.models.Tenant;

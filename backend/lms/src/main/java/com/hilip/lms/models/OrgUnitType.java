@@ -21,13 +21,9 @@ public class OrgUnitType {
     @ManyToOne
     private OrgUnitType parentType;
 
-    @JoinColumn(nullable = false)
+    @JoinColumn(nullable = false, name = "org_structure_id")
     @ManyToOne
-    private Tenant tenant;
-
-    @JoinColumn(nullable = false)
-    @ManyToOne
-    private TenantOrgUnitType tenantOrgUnitType;
+    private OrgStructure orgStructure;
 
     @Column(nullable = false, name = "level_index")
     private Integer level;
@@ -37,6 +33,4 @@ public class OrgUnitType {
 
     @OneToOne(mappedBy = "parentType", cascade = CascadeType.REMOVE)
     private OrgUnitType childType;
-
-
 }

@@ -1,6 +1,6 @@
 package com.hilip.lms.controllers;
 
-import com.hilip.lms.dtos.CreateOrgUnitTypeRequest;
+import com.hilip.lms.dtos.orgUnitType.CreateOrgUnitTypeRequest;
 import com.hilip.lms.services.OrgUnitTypeService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

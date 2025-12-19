@@ -1,11 +1,13 @@
 package com.hilip.lms.helper;
 
-import com.hilip.lms.dtos.OrgUnitTypeResponse;
-import com.hilip.lms.dtos.TenantOrgUnitTypeResponse;
-import com.hilip.lms.dtos.TenantResponse;
+import com.hilip.lms.dtos.orgUnit.OrgUnitResponse;
+import com.hilip.lms.dtos.orgUnitType.OrgUnitTypeResponse;
+import com.hilip.lms.dtos.OrgStructureResponse;
+import com.hilip.lms.dtos.tenant.TenantResponse;
+import com.hilip.lms.models.OrgStructure;
+import com.hilip.lms.models.OrgUnit;
 import com.hilip.lms.models.OrgUnitType;
 import com.hilip.lms.models.Tenant;
-import com.hilip.lms.models.TenantOrgUnitType;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -16,9 +18,13 @@ public interface AutoMapper {
     OrgUnitTypeResponse mapOrgUnitTypeToOrgUnitTypeResponse(OrgUnitType orgUnitType);
 
     @Mapping(target = "structure", source = "orgUnitTypes")
-    TenantOrgUnitTypeResponse mapTenantOrgUnitTypeToTenantOrgUnitTypeResponse(TenantOrgUnitType tenantOrgUnitType);
+    OrgStructureResponse mapOrgStructureToOrgStructureResponse(OrgStructure orgStructure);
 
     @Mapping(target = "admin", source = "admin.fullName")
     TenantResponse mapTenantToTenantResponse(Tenant tenant);
+
+    @Mapping(target = "type", source = "type.name")
+    @Mapping(target = "parentName", source = "parentUnit.name")
+    OrgUnitResponse mapOrgUnitToOrgUnitResponse(OrgUnit orgUnit);
 
 }

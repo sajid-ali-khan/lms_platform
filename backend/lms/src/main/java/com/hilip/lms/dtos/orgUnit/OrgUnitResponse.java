@@ -1,4 +1,4 @@
-package com.hilip.lms.dtos;
+package com.hilip.lms.dtos.orgUnit;
 
 import java.util.Map;
 

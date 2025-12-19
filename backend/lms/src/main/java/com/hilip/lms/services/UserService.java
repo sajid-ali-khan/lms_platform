@@ -1,7 +1,7 @@
 package com.hilip.lms.services;
 
-import com.hilip.lms.dtos.CreateUserRequest;
-import com.hilip.lms.dtos.UserResponse;
+import com.hilip.lms.dtos.user.CreateUserRequest;
+import com.hilip.lms.dtos.user.UserResponse;
 import com.hilip.lms.exceptions.DataAlreadyExistsException;
 import com.hilip.lms.exceptions.ResourceNotFoundException;
 import com.hilip.lms.models.Tenant;

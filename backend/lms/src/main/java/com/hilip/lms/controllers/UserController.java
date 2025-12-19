@@ -1,6 +1,6 @@
 package com.hilip.lms.controllers;
 
-import com.hilip.lms.dtos.CreateUserRequest;
+import com.hilip.lms.dtos.user.CreateUserRequest;
 import com.hilip.lms.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;

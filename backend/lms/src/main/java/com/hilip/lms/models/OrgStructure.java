@@ -20,8 +20,8 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "tenant_org_unit_types")
-public class TenantOrgUnitType {
+@Table(name = "org_structures")
+public class OrgStructure {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private UUID id;
@@ -33,6 +33,6 @@ public class TenantOrgUnitType {
 	@Column(nullable = false)
 	private String name;
 
-	@OneToMany(mappedBy = "tenantOrgUnitType", cascade = CascadeType.REMOVE)
+	@OneToMany(mappedBy = "orgStructure", cascade = CascadeType.REMOVE)
 	private List<OrgUnitType> orgUnitTypes = new ArrayList<>();
 }
