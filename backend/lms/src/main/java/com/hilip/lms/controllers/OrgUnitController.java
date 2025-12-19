@@ -6,13 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/org-units")
+@RequestMapping("/api/tenants/{tenantId}/org-units")
 @AllArgsConstructor
 @Slf4j
 public class OrgUnitController {
@@ -20,10 +17,11 @@ public class OrgUnitController {
 
     @PostMapping
     public ResponseEntity<?> createOrgUnit(
+            @PathVariable("tenantId") String tenantId,
             @RequestBody CreateOrgUnitRequest request
             ) {
         log.info("OrgUnitDto: {}", request);
-        orgUnitService.createOrgUnit(request);
+        orgUnitService.createOrgUnit(tenantId, request);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

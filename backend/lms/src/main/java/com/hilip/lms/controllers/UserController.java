@@ -8,28 +8,30 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/tenants/{tenantId}/users")
 @AllArgsConstructor
 public class UserController {
     private final UserService userService;
 
     @PostMapping
     public ResponseEntity<?> createUser(
-            @RequestBody CreateUserRequest request
-            ) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(request));
+        @PathVariable("tenantId") String tenantId,
+        @RequestBody CreateUserRequest request
+        ) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(tenantId, request));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getUserById(
+            @PathVariable("tenantId") String tenantId,
             @PathVariable String id
     ) {
         return ResponseEntity.ok(userService.getUserById(id));
     }
 
-    @GetMapping("/list")
+    @GetMapping
     public ResponseEntity<?> getAllUsersOfTenant(
-            @RequestParam String tenantId
+            @PathVariable("tenantId") String tenantId
     ) {
         return ResponseEntity.ok(userService.getAllUsersOfTenant(tenantId));
     }

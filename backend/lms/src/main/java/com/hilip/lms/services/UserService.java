@@ -17,8 +17,6 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.UUID;
 
-import static java.util.stream.Collectors.toList;
-
 @Service
 @Slf4j
 @AllArgsConstructor
@@ -27,15 +25,15 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder;
     private final TenantRepository tenantRepository;
 
-    public UserResponse createUser(CreateUserRequest request){
-        Tenant tenant = tenantRepository.findById(UUID.fromString(request.tenantId()))
-                .orElseThrow(() -> new ResourceNotFoundException("Tenant not found with id: " + request.tenantId()));
+    public UserResponse createUser(String tenantId, CreateUserRequest request){
+        Tenant tenant = tenantRepository.findById(UUID.fromString(tenantId))
+                .orElseThrow(() -> new ResourceNotFoundException("Tenant not found with id: " + tenantId));
 
         if (request.role().equals("ADMIN") && tenant.getAdmin() != null){
             throw new DataAlreadyExistsException("Tenant already has an admin user: " + tenant.getAdmin().getUsername());
         }
-        if (userRepository.existsByUsername(request.username())){
-            throw new DataAlreadyExistsException("Username already exists: " + request.username());
+        if (userRepository.existsByUsernameAndTenant(request.username(), tenant)){
+            throw new DataAlreadyExistsException("Username already exists: " + request.username() + " in the tenant " + tenant.getName());
         }
         User newUser = new User();
         newUser.setUsername(request.username());

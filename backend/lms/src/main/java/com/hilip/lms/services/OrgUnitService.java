@@ -23,7 +23,7 @@ public class OrgUnitService {
     private final TenantRepository tenantRepository;
     private final AutoMapper autoMapper;
 
-    public void createOrgUnit(CreateOrgUnitRequest request) {
+    public void createOrgUnit(String tenantId, CreateOrgUnitRequest request) {
         boolean parentNull = request.parentOrgUnitId() == null || request.parentOrgUnitId().isBlank();
         var orgUnitType = orgUnitTypeRepository.findById(UUID.fromString(request.orgUnitTypeId()))
                 .orElseThrow(() -> new ResourceNotFoundException("Org unit type not found for id: " + request.orgUnitTypeId()));
@@ -35,7 +35,7 @@ public class OrgUnitService {
             throw new IllegalArgumentException("Parent unit must be null for org unit type " + orgUnitType.getName());
         }
 
-        Tenant tenant = tenantRepository.findById(UUID.fromString(request.tenantId()))
+        Tenant tenant = tenantRepository.findById(UUID.fromString(tenantId))
                 .orElseThrow(() -> new ResourceNotFoundException("Tenant not found"));
 
         var newOrgUnit = new OrgUnit();

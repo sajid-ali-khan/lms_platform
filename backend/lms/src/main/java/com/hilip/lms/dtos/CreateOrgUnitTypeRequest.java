@@ -3,7 +3,7 @@ package com.hilip.lms.dtos;
 import java.util.List;
 
 public record CreateOrgUnitTypeRequest(
-        String tenantId,
+        String name,
         List<String> hierarchyLevels
 ) {
 }

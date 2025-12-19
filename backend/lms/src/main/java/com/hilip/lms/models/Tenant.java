@@ -27,10 +27,7 @@ public class Tenant {
     private User admin = null;
 
     @OneToMany(mappedBy = "tenant", cascade = CascadeType.REMOVE)
-    private List<OrgUnitType> orgUnitTypes = new ArrayList<>();
-
-    @OneToMany(mappedBy = "tenant", cascade = CascadeType.REMOVE)
-    private List<OrgUnit> orgUnits = new ArrayList<>();
+    private List<TenantOrgUnitType> tenantOrgUnitTypes = new ArrayList<>();
 
     @OneToMany(mappedBy = "tenant", cascade = CascadeType.REMOVE)
     private List<User> users = new ArrayList<>();

@@ -25,6 +25,10 @@ public class OrgUnitType {
     @ManyToOne
     private Tenant tenant;
 
+    @JoinColumn(nullable = false)
+    @ManyToOne
+    private TenantOrgUnitType tenantOrgUnitType;
+
     @Column(nullable = false, name = "level_index")
     private Integer level;
 
