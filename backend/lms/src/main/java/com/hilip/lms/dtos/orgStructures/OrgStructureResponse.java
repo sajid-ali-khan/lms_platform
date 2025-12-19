@@ -1,4 +1,4 @@
-package com.hilip.lms.dtos;
+package com.hilip.lms.dtos.orgStructures;
 
 import com.hilip.lms.dtos.orgUnitType.OrgUnitTypeResponse;
 

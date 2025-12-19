@@ -2,7 +2,7 @@ package com.hilip.lms.helper;
 
 import com.hilip.lms.dtos.orgUnit.OrgUnitResponse;
 import com.hilip.lms.dtos.orgUnitType.OrgUnitTypeResponse;
-import com.hilip.lms.dtos.OrgStructureResponse;
+import com.hilip.lms.dtos.orgStructures.OrgStructureResponse;
 import com.hilip.lms.dtos.tenant.TenantResponse;
 import com.hilip.lms.models.OrgStructure;
 import com.hilip.lms.models.OrgUnit;

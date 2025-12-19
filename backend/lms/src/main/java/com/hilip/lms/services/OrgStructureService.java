@@ -2,14 +2,14 @@ package com.hilip.lms.services;
 
 import com.hilip.lms.dtos.orgUnitType.CreateOrgUnitTypeRequest;
 import com.hilip.lms.dtos.orgUnitType.OrgUnitTypeResponse;
-import com.hilip.lms.dtos.OrgStructureResponse;
+import com.hilip.lms.dtos.orgStructures.OrgStructureResponse;
 import com.hilip.lms.exceptions.DataAlreadyExistsException;
 import com.hilip.lms.exceptions.ResourceNotFoundException;
 import com.hilip.lms.helper.AutoMapper;
 import com.hilip.lms.models.OrgUnitType;
 import com.hilip.lms.models.Tenant;
 import com.hilip.lms.repositories.OrgUnitTypeRepository;
-import com.hilip.lms.repositories.TenantOrgUnitTypeRepository;
+import com.hilip.lms.repositories.OrgStructureRepository;
 import com.hilip.lms.repositories.TenantRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -21,10 +21,10 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class OrgUnitTypeService {
+public class OrgStructureService {
     private final OrgUnitTypeRepository orgUnitTypeRepository;
     private final TenantRepository tenantRepository;
-    private final TenantOrgUnitTypeRepository tenantOrgUnitTypeRepository;
+    private final OrgStructureRepository orgStructureRepository;
     private final AutoMapper autoMapper;
 
     @Transactional
@@ -32,13 +32,13 @@ public class OrgUnitTypeService {
         Tenant tenant = tenantRepository.findById(java.util.UUID.fromString(tenantId))
                 .orElseThrow(() -> new IllegalArgumentException("Tenant not found"));
 
-        if (tenantOrgUnitTypeRepository.existsByNameAndTenant(request.name(), tenant)) {
+        if (orgStructureRepository.existsByNameAndTenant(request.name(), tenant)) {
             throw new DataAlreadyExistsException("A organization structure of name " + request.name() + " already exists in the tenant " + tenant.getName());
         }
         com.hilip.lms.models.OrgStructure orgStructure = new com.hilip.lms.models.OrgStructure();
         orgStructure.setName(request.name());
         orgStructure.setTenant(tenant);
-        orgStructure = tenantOrgUnitTypeRepository.save(orgStructure);
+        orgStructure = orgStructureRepository.save(orgStructure);
 
         List<String> hierarchyLevels = request.hierarchyLevels();
         List<OrgUnitTypeResponse> response = new ArrayList<>();
