@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/tenant")
+@RequestMapping("/api/tenants")
 @AllArgsConstructor
 public class TenantController {
     private final TenantService tenantService;
@@ -17,7 +17,7 @@ public class TenantController {
         return ResponseEntity.ok(tenantService.createTenant(dto));
     }
 
-    @GetMapping("/list")
+    @GetMapping
     public ResponseEntity<?> getAllTenants(){
         return ResponseEntity.ok(tenantService.getAllTenants());
     }

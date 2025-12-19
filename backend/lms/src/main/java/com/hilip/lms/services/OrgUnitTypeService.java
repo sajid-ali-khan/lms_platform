@@ -3,6 +3,7 @@ package com.hilip.lms.services;
 import com.hilip.lms.dtos.CreateOrgUnitTypeRequest;
 import com.hilip.lms.dtos.OrgUnitTypeResponse;
 import com.hilip.lms.exceptions.ResourceNotFoundException;
+import com.hilip.lms.helper.AutoMapper;
 import com.hilip.lms.models.OrgUnitType;
 import com.hilip.lms.models.Tenant;
 import com.hilip.lms.repositories.OrgUnitTypeRepository;
@@ -20,6 +21,7 @@ import java.util.UUID;
 public class OrgUnitTypeService {
     private final OrgUnitTypeRepository orgUnitTypeRepository;
     private final TenantRepository tenantRepository;
+    private final AutoMapper autoMapper;
 
     @Transactional
     public List<OrgUnitTypeResponse> createStructure(CreateOrgUnitTypeRequest request) {
@@ -38,11 +40,7 @@ public class OrgUnitTypeService {
                 currentType.setParentType(parentType);
             }
             parentType = orgUnitTypeRepository.save(currentType);
-            response.add(new OrgUnitTypeResponse(
-                    parentType.getId().toString(),
-                    parentType.getName(),
-                    parentType.getLevel()
-            ));
+            response.add(autoMapper.mapOrgUnitTypeToResponse(parentType));
         }
         return response;
     }
@@ -52,13 +50,7 @@ public class OrgUnitTypeService {
             throw new ResourceNotFoundException("Tenant with id " + tenantId + " not found");
         }
         return orgUnitTypeRepository.findByTenantId(UUID.fromString(tenantId)).stream()
-                .map(orgUnitType -> {
-                    return new OrgUnitTypeResponse(
-                            orgUnitType.getId().toString(),
-                            orgUnitType.getName(),
-                            orgUnitType.getLevel()
-                    );
-                })
+                .map(autoMapper::mapOrgUnitTypeToResponse)
                 .toList();
     }
 }
