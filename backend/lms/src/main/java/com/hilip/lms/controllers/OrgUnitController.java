@@ -1,12 +1,15 @@
 package com.hilip.lms.controllers;
 
 import com.hilip.lms.dtos.orgUnit.CreateOrgUnitRequest;
+import com.hilip.lms.dtos.orgUnit.OrgUnitResponse;
 import com.hilip.lms.services.OrgUnitService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/tenants/{tenantId}/org-units")
@@ -28,10 +31,18 @@ public class OrgUnitController {
     @GetMapping
     public ResponseEntity<?> getOrgUnits(
             @PathVariable("tenantId") String tenantId,
-            @RequestParam String orgUnitTypeId
+            @RequestParam String structureName,
+            @RequestParam String typeName,
+            @RequestParam(required = false) String parentUnitId
     ) {
-        log.info("Fetching org units for tenantId: {}", tenantId);
-        var orgUnits = orgUnitService.getOrgUnitsByOrgUnitTypeId(tenantId, orgUnitTypeId);
-        return ResponseEntity.ok(orgUnits);
+        log.debug("Fetching org units for tenantId: {}, structureName: {}, typeName: {}", tenantId, structureName, typeName);
+        List<OrgUnitResponse> response;
+        if (parentUnitId == null) {
+            response = orgUnitService.getOrgUnitsByTenantAndStructureAndType(tenantId, structureName, typeName);
+        }else {
+            response = orgUnitService.getOrgUnitsByTenantStructureTypeAndParentUnit(tenantId, structureName, typeName, parentUnitId);
+        }
+        return ResponseEntity.ok(response);
+
     }
 }

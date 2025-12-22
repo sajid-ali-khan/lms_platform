@@ -11,7 +11,17 @@ public interface OrgUnitRepository extends JpaRepository<OrgUnit, UUID> {
     @Query("""
         select ou from OrgUnit ou
         where ou.tenant.id = :tenantId
-        and ou.type.id = :orgUnitTypeId
+        and ou.type.orgStructure.name = :structureName
+        and ou.type.name = :typeName
 """)
-    List<OrgUnit> findByTenantAndStructureTypeAndOrgUnitType(String tenantId, String orgUnitTypeId);
+    List<OrgUnit> findByTenantAndStructureAndType(UUID tenantId, String structureName, String typeName);
+
+    @Query("""
+        select ou from OrgUnit ou
+        where ou.tenant.id = :tenantId
+        and ou.type.orgStructure.name = :structureName
+        and ou.type.name = :typeName
+        and ou.parentUnit.id = :parentOrgUnitId
+""")
+    List<OrgUnit> findByTenantAndStructureTypeAndParentOrgUnitId(UUID tenantId, String structureName, String typeName, UUID parentOrgUnitId);
 }

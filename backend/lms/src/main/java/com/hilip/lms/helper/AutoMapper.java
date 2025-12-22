@@ -30,8 +30,6 @@ public interface AutoMapper {
     @Mapping(target = "admin", source = "admin.fullName")
     TenantResponse mapTenantToTenantResponse(Tenant tenant);
 
-    @Mapping(target = "type", source = "type.name")
-    @Mapping(target = "parentName", source = "parentUnit.name")
     OrgUnitResponse mapOrgUnitToOrgUnitResponse(OrgUnit orgUnit);
 
     @Mapping(target = "tenantName", source = "tenant.name")

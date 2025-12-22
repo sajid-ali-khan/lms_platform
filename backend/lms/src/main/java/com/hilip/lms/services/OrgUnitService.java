@@ -57,13 +57,26 @@ public class OrgUnitService {
         orgUnitRepository.save(newOrgUnit);
     }
 
-    public List<OrgUnitResponse> getOrgUnitsByOrgUnitTypeId(String tenantId, String orgUnitTypeId) {
-        log.info("Fetching org units for tenantId: {}, orgUnitTypeId: {}", tenantId, orgUnitTypeId);
-        var orgUnits = orgUnitRepository.findByTenantAndStructureTypeAndOrgUnitType(
-                tenantId,
-                orgUnitTypeId
+    public List<OrgUnitResponse> getOrgUnitsByTenantAndStructureAndType(String tenantId, String structureName, String typeName) {
+        log.info("Getting org units for tenantId: {} and structure: {}", tenantId,  structureName);
+        var orgUnits = orgUnitRepository.findByTenantAndStructureAndType(
+                UUID.fromString(tenantId),
+                structureName.toLowerCase(),
+                typeName.toLowerCase()
         );
+        return orgUnits.stream()
+                .map(autoMapper::mapOrgUnitToOrgUnitResponse)
+                .toList();
+    }
 
+    public List<OrgUnitResponse> getOrgUnitsByTenantStructureTypeAndParentUnit(String tenantId, String structureName, String typeName, String parentUnitId) {
+        log.info("Getting org units for tenantId: {}, structure: {}, type: {} and parentUnitId: {}", tenantId,  structureName, typeName, parentUnitId);
+        var orgUnits = orgUnitRepository.findByTenantAndStructureTypeAndParentOrgUnitId(
+                UUID.fromString(tenantId),
+                structureName.toLowerCase(),
+                typeName.toLowerCase(),
+                UUID.fromString(parentUnitId)
+        );
         return orgUnits.stream()
                 .map(autoMapper::mapOrgUnitToOrgUnitResponse)
                 .toList();
