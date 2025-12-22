@@ -1,5 +1,6 @@
 package com.hilip.lms.helper;
 
+import com.hilip.lms.dtos.orgStructures.OrgStructureResponseBasic;
 import com.hilip.lms.dtos.orgUnit.OrgUnitResponse;
 import com.hilip.lms.dtos.orgUnitType.OrgUnitTypeResponse;
 import com.hilip.lms.dtos.orgStructures.OrgStructureResponse;
@@ -18,8 +19,13 @@ public interface AutoMapper {
     @Mapping(target = "parentName", source = "parentType.name")
     OrgUnitTypeResponse mapOrgUnitTypeToOrgUnitTypeResponse(OrgUnitType orgUnitType);
 
+    @Mapping(target = "structure", expression = "java(orgStructure.getOrgUnitTypes().stream().map(OrgUnitType::getName).toList())")
+    OrgStructureResponseBasic mapOrgStructureToOrgStructureResponseBasic(OrgStructure orgStructure);
+
     @Mapping(target = "structure", source = "orgUnitTypes")
     OrgStructureResponse mapOrgStructureToOrgStructureResponse(OrgStructure orgStructure);
+
+
 
     @Mapping(target = "admin", source = "admin.fullName")
     TenantResponse mapTenantToTenantResponse(Tenant tenant);

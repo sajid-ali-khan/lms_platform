@@ -18,12 +18,17 @@ public class OrgStructureController {
             @PathVariable("tenantId") String tenantId,
             @RequestBody CreateOrgUnitTypeRequest request
             ){
-        var orgStructure = orgStructureService.createStructure(tenantId, request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(orgStructure);
+        orgStructureService.createStructure(tenantId, request);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @GetMapping("/detailed")
+    public ResponseEntity<?> getDetailedTenantStructures(@PathVariable("tenantId") String tenantId){
+        return ResponseEntity.ok(orgStructureService.getTenantStructures(tenantId));
     }
 
     @GetMapping
     public ResponseEntity<?> getTenantStructures(@PathVariable("tenantId") String tenantId){
-        return ResponseEntity.ok(orgStructureService.getTenantStructures(tenantId));
+        return ResponseEntity.ok(orgStructureService.getTenantStructuresBasicInfo(tenantId));
     }
 }

@@ -1,7 +1,7 @@
 package com.hilip.lms.services;
 
+import com.hilip.lms.dtos.orgStructures.OrgStructureResponseBasic;
 import com.hilip.lms.dtos.orgUnitType.CreateOrgUnitTypeRequest;
-import com.hilip.lms.dtos.orgUnitType.OrgUnitTypeResponse;
 import com.hilip.lms.dtos.orgStructures.OrgStructureResponse;
 import com.hilip.lms.exceptions.DataAlreadyExistsException;
 import com.hilip.lms.exceptions.ResourceNotFoundException;
@@ -15,7 +15,6 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,7 +27,7 @@ public class OrgStructureService {
     private final AutoMapper autoMapper;
 
     @Transactional
-    public List<OrgUnitTypeResponse> createStructure(String tenantId, CreateOrgUnitTypeRequest request) {
+    public void createStructure(String tenantId, CreateOrgUnitTypeRequest request) {
         Tenant tenant = tenantRepository.findById(java.util.UUID.fromString(tenantId))
                 .orElseThrow(() -> new IllegalArgumentException("Tenant not found"));
 
@@ -41,7 +40,6 @@ public class OrgStructureService {
         orgStructure = orgStructureRepository.save(orgStructure);
 
         List<String> hierarchyLevels = request.hierarchyLevels();
-        List<OrgUnitTypeResponse> response = new ArrayList<>();
         OrgUnitType parentType = null;
         for (int i = 0; i < hierarchyLevels.size(); i++) {
             OrgUnitType currentType = new OrgUnitType();
@@ -52,9 +50,7 @@ public class OrgStructureService {
                 currentType.setParentType(parentType);
             }
             parentType = orgUnitTypeRepository.save(currentType);
-            response.add(autoMapper.mapOrgUnitTypeToOrgUnitTypeResponse(parentType));
         }
-        return response;
     }
 
     public List<OrgStructureResponse> getTenantStructures(String tenantId) {
@@ -64,5 +60,14 @@ public class OrgStructureService {
         return tenant.getOrgStructures().stream()
                     .map(autoMapper::mapOrgStructureToOrgStructureResponse)
                     .toList();
+    }
+
+    public List<OrgStructureResponseBasic> getTenantStructuresBasicInfo(String tenantId) {
+        Tenant tenant = tenantRepository.findById(UUID.fromString(tenantId))
+                            .orElseThrow(() -> new ResourceNotFoundException("Tenant not found."));
+
+        return tenant.getOrgStructures().stream()
+                .map(autoMapper::mapOrgStructureToOrgStructureResponseBasic)
+                .toList();
     }
 }
