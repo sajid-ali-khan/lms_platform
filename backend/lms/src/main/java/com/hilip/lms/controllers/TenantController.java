@@ -1,5 +1,6 @@
 package com.hilip.lms.controllers;
 
+import com.hilip.lms.dtos.tenant.CreateTenantAndAdminRequest;
 import com.hilip.lms.dtos.tenant.TenantCreateDto;
 import com.hilip.lms.services.TenantService;
 import lombok.AllArgsConstructor;
@@ -13,8 +14,8 @@ public class TenantController {
     private final TenantService tenantService;
 
     @PostMapping
-    public ResponseEntity<?> createTenant(@RequestBody TenantCreateDto dto){
-        return ResponseEntity.ok(tenantService.createTenant(dto));
+    public ResponseEntity<?> createTenant(@RequestBody CreateTenantAndAdminRequest dto){
+        return ResponseEntity.ok(tenantService.createTenantWithAdmin(dto));
     }
 
     @GetMapping

@@ -27,14 +27,13 @@ public class AdminSeeder implements ApplicationRunner {
             return;
         }
 
-        if (userRepository.existsByUsername(adminUName)){
+        if (userRepository.existsByEmail(adminUName)){
             log.info("Admin already exists.");
             return;
         }
 
         User admin = new User();
-        admin.setUsername(adminUName);
-        admin.setEmail("super.admin@lms.com");
+        admin.setEmail(adminUName);
         admin.setPasswordHash(passwordEncoder.encode(adminPassword));
         admin.setRole(UserRole.SUPER_ADMIN);
         userRepository.save(admin);

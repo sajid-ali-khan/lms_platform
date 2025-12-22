@@ -32,11 +32,10 @@ public class UserService {
         if (request.role().equals("ADMIN") && tenant.getAdmin() != null){
             throw new DataAlreadyExistsException("Tenant already has an admin user: " + tenant.getAdmin().getUsername());
         }
-        if (userRepository.existsByUsernameAndTenant(request.username(), tenant)){
-            throw new DataAlreadyExistsException("Username already exists: " + request.username() + " in the tenant " + tenant.getName());
+        if (userRepository.existsByEmailAndTenant(request.email(), tenant)){
+            throw new DataAlreadyExistsException("Email already exists: " + request.email() + " in the tenant " + tenant.getName());
         }
         User newUser = new User();
-        newUser.setUsername(request.username());
         newUser.setFullName(request.fullName());
         newUser.setEmail(request.email());
         newUser.setPasswordHash(passwordEncoder.encode(request.password()));
