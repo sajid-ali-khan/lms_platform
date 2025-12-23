@@ -55,4 +55,9 @@ public class OrgUnitController {
                 orgUnitService.getOrgUnitsTreeByTenantAndStructure(tenantId, structureName)
         );
     }
+
+    @GetMapping("/{orgUnitId}/details")
+    public ResponseEntity<?> getOrgUnitDetails(@PathVariable("orgUnitId") String orgUnitId){
+        return ResponseEntity.ok(orgUnitService.getOrgUnitDetails(orgUnitId));
+    }
 }

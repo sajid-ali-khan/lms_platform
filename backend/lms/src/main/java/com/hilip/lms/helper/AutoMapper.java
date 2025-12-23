@@ -1,6 +1,7 @@
 package com.hilip.lms.helper;
 
 import com.hilip.lms.dtos.orgStructures.OrgStructureResponseBasic;
+import com.hilip.lms.dtos.orgUnit.OrgUnitDetails;
 import com.hilip.lms.dtos.orgUnit.OrgUnitDto;
 import com.hilip.lms.dtos.orgUnit.OrgUnitResponse;
 import com.hilip.lms.dtos.orgUnitType.OrgUnitTypeResponse;
@@ -41,4 +42,8 @@ public interface AutoMapper {
 
     @Mapping(target = "parentId", source = "parentUnit.id")
     OrgUnitDto mapOrgUnitToOrgUnitDto(OrgUnit orgUnit);
+
+    @Mapping(target = "parent", source = "parentUnit.name")
+    @Mapping(target = "type", source = "type.name")
+    OrgUnitDetails mapOrgUnitToOrgUnitDetails(OrgUnit orgUnit);
 }

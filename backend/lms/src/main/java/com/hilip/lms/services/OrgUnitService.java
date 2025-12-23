@@ -1,6 +1,7 @@
 package com.hilip.lms.services;
 
 import com.hilip.lms.dtos.orgUnit.CreateOrgUnitRequest;
+import com.hilip.lms.dtos.orgUnit.OrgUnitDetails;
 import com.hilip.lms.dtos.orgUnit.OrgUnitDto;
 import com.hilip.lms.dtos.orgUnit.OrgUnitResponse;
 import com.hilip.lms.exceptions.ResourceNotFoundException;
@@ -100,5 +101,12 @@ public class OrgUnitService {
                 .stream()
                 .map(autoMapper::mapOrgUnitToOrgUnitDto)
                 .toList();
+    }
+
+    public OrgUnitDetails getOrgUnitDetails(String orgUnitId){
+        OrgUnit orgUnit = orgUnitRepository.findById(UUID.fromString(orgUnitId))
+                .orElseThrow(() -> new ResourceNotFoundException("Org Unit not found"));
+
+        return autoMapper.mapOrgUnitToOrgUnitDetails(orgUnit);
     }
 }
