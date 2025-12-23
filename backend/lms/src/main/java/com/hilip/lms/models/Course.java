@@ -32,7 +32,8 @@ public class Course {
     private User instructor;
 
     @Column(nullable = false)
-    private String status; // DRAFT, PUBLISHED, ARCHIVED
+    @Enumerated(EnumType.STRING)
+    private CourseStatus status; // DRAFT, PUBLISHED, ARCHIVED
 
     private LocalDateTime startDate;
     private LocalDateTime endDate;
