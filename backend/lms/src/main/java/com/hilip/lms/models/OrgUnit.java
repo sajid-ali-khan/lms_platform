@@ -28,6 +28,10 @@ public class OrgUnit {
     private OrgUnit parentUnit;
 
     @ManyToOne
+    @JoinColumn(name = "org_structure_id", nullable = false)
+    private OrgStructure orgStructure;
+
+    @ManyToOne
     @JoinColumn
     private Tenant tenant;
 

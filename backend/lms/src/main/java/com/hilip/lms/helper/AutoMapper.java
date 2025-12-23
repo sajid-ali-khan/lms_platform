@@ -1,6 +1,7 @@
 package com.hilip.lms.helper;
 
 import com.hilip.lms.dtos.orgStructures.OrgStructureResponseBasic;
+import com.hilip.lms.dtos.orgUnit.OrgUnitDto;
 import com.hilip.lms.dtos.orgUnit.OrgUnitResponse;
 import com.hilip.lms.dtos.orgUnitType.OrgUnitTypeResponse;
 import com.hilip.lms.dtos.orgStructures.OrgStructureResponse;
@@ -37,4 +38,7 @@ public interface AutoMapper {
     @Mapping(target = "adminEmail", source = "tenant.admin.email")
     @Mapping(target = "adminPassword", source = "adminPassword")
     TenantAndAdminResponse mapTenantToTenantAndAdminResponse(Tenant tenant, String adminPassword);
+
+    @Mapping(target = "parentId", source = "parentUnit.id")
+    OrgUnitDto mapOrgUnitToOrgUnitDto(OrgUnit orgUnit);
 }

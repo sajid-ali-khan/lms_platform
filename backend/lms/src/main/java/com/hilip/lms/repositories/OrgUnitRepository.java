@@ -1,5 +1,6 @@
 package com.hilip.lms.repositories;
 
+import com.hilip.lms.models.OrgStructure;
 import com.hilip.lms.models.OrgUnit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -23,5 +24,13 @@ public interface OrgUnitRepository extends JpaRepository<OrgUnit, UUID> {
         and ou.type.name = :typeName
         and ou.parentUnit.id = :parentOrgUnitId
 """)
-    List<OrgUnit> findByTenantAndStructureTypeAndParentOrgUnitId(UUID tenantId, String structureName, String typeName, UUID parentOrgUnitId);
+    List<OrgUnit> findByTenantAndStructureTypeAndParentOrgUnitId(
+            UUID tenantId,
+            String structureName,
+            String typeName,
+            UUID parentOrgUnitId);
+
+
+    List<OrgUnit> findAllByOrgStructure(OrgStructure orgStructure);
+
 }

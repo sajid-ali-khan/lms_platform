@@ -45,4 +45,14 @@ public class OrgUnitController {
         return ResponseEntity.ok(response);
 
     }
+
+    @GetMapping("/structure/{structureName}/tree")
+    public ResponseEntity<?> getOrgUnitsByTenantAndStructure(
+            @PathVariable("tenantId") String tenantId,
+            @PathVariable("structureName") String structureName
+    ){
+        return ResponseEntity.ok(
+                orgUnitService.getOrgUnitsTreeByTenantAndStructure(tenantId, structureName)
+        );
+    }
 }

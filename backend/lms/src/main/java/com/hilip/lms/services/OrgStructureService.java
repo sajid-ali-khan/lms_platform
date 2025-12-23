@@ -70,4 +70,7 @@ public class OrgStructureService {
                 .map(autoMapper::mapOrgStructureToOrgStructureResponseBasic)
                 .toList();
     }
+
+
+
 }
