@@ -1,7 +1,7 @@
 package com.hilip.lms.config;
 
 import com.hilip.lms.models.User;
-import com.hilip.lms.models.UserRole;
+import com.hilip.lms.models.enums.UserRole;
 import com.hilip.lms.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

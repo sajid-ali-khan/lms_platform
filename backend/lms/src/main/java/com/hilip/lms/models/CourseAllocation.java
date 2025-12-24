@@ -2,10 +2,13 @@ package com.hilip.lms.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "course_allocations")
 public class CourseAllocation {

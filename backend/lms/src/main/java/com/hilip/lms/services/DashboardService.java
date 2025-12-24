@@ -3,6 +3,8 @@ package com.hilip.lms.services;
 import com.hilip.lms.dtos.dashboard.DashboardResponse;
 import com.hilip.lms.exceptions.ResourceNotFoundException;
 import com.hilip.lms.models.*;
+import com.hilip.lms.models.enums.CourseStatus;
+import com.hilip.lms.models.enums.UserRole;
 import com.hilip.lms.repositories.CourseRepository;
 import com.hilip.lms.repositories.TenantRepository;
 import com.hilip.lms.repositories.UserRepository;

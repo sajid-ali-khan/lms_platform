@@ -2,7 +2,7 @@ package com.hilip.lms.repositories;
 
 import com.hilip.lms.models.Tenant;
 import com.hilip.lms.models.User;
-import com.hilip.lms.models.UserRole;
+import com.hilip.lms.models.enums.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

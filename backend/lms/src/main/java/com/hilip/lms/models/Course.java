@@ -1,13 +1,17 @@
 package com.hilip.lms.models;
 
+import com.hilip.lms.models.enums.CourseStatus;
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "courses")
 public class Course {

@@ -1,4 +1,4 @@
-package com.hilip.lms.models;
+package com.hilip.lms.models.enums;
 
 public enum CourseStatus {
     ACTIVE,

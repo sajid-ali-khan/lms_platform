@@ -1,7 +1,7 @@
 package com.hilip.lms.repositories;
 
 import com.hilip.lms.models.Course;
-import com.hilip.lms.models.CourseStatus;
+import com.hilip.lms.models.enums.CourseStatus;
 import com.hilip.lms.models.Tenant;
 import org.springframework.data.jpa.repository.JpaRepository;
 

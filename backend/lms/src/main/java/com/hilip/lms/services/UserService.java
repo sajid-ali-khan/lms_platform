@@ -6,7 +6,7 @@ import com.hilip.lms.exceptions.DataAlreadyExistsException;
 import com.hilip.lms.exceptions.ResourceNotFoundException;
 import com.hilip.lms.models.Tenant;
 import com.hilip.lms.models.User;
-import com.hilip.lms.models.UserRole;
+import com.hilip.lms.models.enums.UserRole;
 import com.hilip.lms.repositories.TenantRepository;
 import com.hilip.lms.repositories.UserRepository;
 import lombok.AllArgsConstructor;
