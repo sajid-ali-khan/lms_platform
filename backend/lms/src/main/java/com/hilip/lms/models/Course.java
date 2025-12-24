@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,9 @@ public class Course {
     @Column(length = 2000)
     private String description;
 
-    private String code; // Course code like "CS101"
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "thumbnail_file_id")
+    private FileResource thumbnailFile;
 
     @ManyToOne
     @JoinColumn(nullable = false)
@@ -42,10 +45,11 @@ public class Course {
     private LocalDateTime startDate;
     private LocalDateTime endDate;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
+    @Column(nullable = false, updatable = false)
+    private Instant createdAt;
 
-    private LocalDateTime updatedAt;
+    @Column(nullable = false)
+    private Instant updatedAt;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE)
     private List<Module> modules = new ArrayList<>();
@@ -55,5 +59,16 @@ public class Course {
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE)
     private List<CourseAllocation> courseAllocations = new ArrayList<>(); // made must for students
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = Instant.now();
+        this.updatedAt = Instant.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedAt = Instant.now();
+    }
 }
 
