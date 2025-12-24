@@ -26,7 +26,7 @@ public class Course {
     @Column(length = 2000)
     private String description;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @OneToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "thumbnail_file_id")
     private FileResource thumbnailFile;
 

@@ -51,6 +51,10 @@ public class TenantService {
         if (tenantRepository.existsByNameIgnoreCase(dto.tenantName())) {
             throw new DataAlreadyExistsException("Tenant with name " + dto.tenantName() + " already exists");
         }
+
+        if (userRepository.existsByEmail(dto.adminEmail())) {
+            throw new DataAlreadyExistsException("User with email " + dto.adminEmail() + " already exists");
+        }
         User admin = new User();
         admin.setFullName(dto.adminFullName());
         admin.setEmail(dto.adminEmail());

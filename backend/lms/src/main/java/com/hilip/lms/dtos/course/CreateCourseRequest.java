@@ -6,7 +6,6 @@ public record CreateCourseRequest(
         String title,
         String description,
         String instructorId,
-        CourseStatus visibility,
-        String coverPicturePath
+        CourseStatus visibility
 ) {
 }
