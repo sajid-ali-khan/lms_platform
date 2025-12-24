@@ -67,6 +67,8 @@ public class TenantService {
         tenant.setCategory(TenantCategory.valueOf(dto.tenantCategory()));
 
         tenant = tenantRepository.save(tenant);
+        admin.setTenant(tenant);
+        userRepository.save(admin);
 
         log.debug("Tenant created with name: {}", tenant.getName());
         return autoMapper.mapTenantToTenantAndAdminResponse(tenant, adminPassword);
