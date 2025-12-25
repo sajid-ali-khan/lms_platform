@@ -61,7 +61,7 @@ public class CourseService {
         newCourse.setInstructor(instructor);
         newCourse.setThumbnailFile(thumbnail);
         newCourse.setTenant(tenant);
-        newCourse.setStatus(CourseStatus.ACTIVE);
+        newCourse.setStatus(request.visibility());
 
         courseRepository.save(newCourse);
     }
