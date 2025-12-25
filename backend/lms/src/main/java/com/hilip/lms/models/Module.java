@@ -19,9 +19,6 @@ public class Module {
     @Column(nullable = false)
     private String title;
 
-    @Column(length = 2000)
-    private String description;
-
     @ManyToOne
     @JoinColumn(nullable = false)
     private Course course;

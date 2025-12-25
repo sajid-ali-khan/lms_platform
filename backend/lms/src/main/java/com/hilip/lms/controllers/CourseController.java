@@ -24,4 +24,13 @@ public class CourseController {
         courseService.createCourse(tenantId, request, thumbnailFile);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
+    @PostMapping("/{courseId}/modules")
+    public ResponseEntity<?> createModule(
+            @PathVariable("tenantId")String tenantId,
+            @PathVariable("courseId")String courseId
+    ){
+        courseService.addModuleToCourse(tenantId, courseId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 }
