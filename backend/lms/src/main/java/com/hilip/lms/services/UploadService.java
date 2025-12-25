@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @Service
 public class UploadService {
-    public Path uploadFile(MultipartFile thumbnailFile, String newFileName) throws IOException {
+    public void uploadFile(MultipartFile thumbnailFile, String newFileName) throws IOException {
         Path uploadDir = Path.of("uploads");
         Files.createDirectories(uploadDir);
 
@@ -18,7 +18,6 @@ public class UploadService {
         newFileName = newFileName + "." + extension;
         Path targetPath = uploadDir.resolve(newFileName);
         Files.copy(thumbnailFile.getInputStream(), targetPath);
-        return targetPath;
     }
 
 }

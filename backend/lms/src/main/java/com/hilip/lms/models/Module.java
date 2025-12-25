@@ -29,6 +29,6 @@ public class Module {
     @Column(nullable = false)
     private Boolean isPublished = false;
 
-    @OneToMany(mappedBy = "module", cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "module", cascade = {CascadeType.REMOVE, CascadeType.PERSIST, CascadeType.MERGE})
     private java.util.List<Lesson> lessons = new java.util.ArrayList<>();
 }

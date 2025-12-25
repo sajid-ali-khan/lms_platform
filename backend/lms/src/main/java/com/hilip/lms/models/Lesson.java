@@ -1,5 +1,6 @@
 package com.hilip.lms.models;
 
+import com.hilip.lms.models.enums.LessonType;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -27,7 +28,8 @@ public class Lesson {
     private Module module;
 
     @Column(nullable = false)
-    private String type; // VIDEO, TEXT, DOCUMENT, QUIZ, ASSIGNMENT
+    @Enumerated(EnumType.STRING)
+    private LessonType type = LessonType.VIDEO; // VIDEO, TEXT, DOCUMENT, QUIZ, ASSIGNMENT
 
     @Column(nullable = false, name = "sequence_order")
     private Integer sequenceOrder;
@@ -36,6 +38,4 @@ public class Lesson {
 
     @Column(nullable = false)
     private Boolean isPublished = false;
-
-    private Integer durationMinutes;
 }

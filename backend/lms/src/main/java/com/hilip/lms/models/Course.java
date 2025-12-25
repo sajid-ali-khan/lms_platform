@@ -42,9 +42,6 @@ public class Course {
     @Enumerated(EnumType.STRING)
     private CourseStatus status; // DRAFT, PUBLISHED, ARCHIVED
 
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
-
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
 

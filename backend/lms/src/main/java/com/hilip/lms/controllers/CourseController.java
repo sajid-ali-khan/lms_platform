@@ -1,6 +1,7 @@
 package com.hilip.lms.controllers;
 
 import com.hilip.lms.dtos.course.CreateCourseRequest;
+import com.hilip.lms.dtos.course.lessons.UpdateLessonRequest;
 import com.hilip.lms.services.CourseService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -10,14 +11,14 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/api/tenants/{tenantId}/courses")
+@RequestMapping("/api/courses")
 @AllArgsConstructor
 public class CourseController {
     private final CourseService courseService;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createCourse(
-            @PathVariable("tenantId")String tenantId,
+            @RequestPart("tenantId") String tenantId,
             @RequestPart("thumbnailFile")MultipartFile thumbnailFile,
             @RequestPart("data") CreateCourseRequest request
             ){
@@ -27,10 +28,26 @@ public class CourseController {
 
     @PostMapping("/{courseId}/modules")
     public ResponseEntity<?> createModule(
-            @PathVariable("tenantId")String tenantId,
             @PathVariable("courseId")String courseId
     ){
-        courseService.addModuleToCourse(tenantId, courseId);
+        courseService.addModuleToCourse(courseId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/modules/{moduleId}/lessons")
+    public ResponseEntity<?> createLesson(
+            @PathVariable("moduleId")String moduleId
+    ){
+        courseService.addLessonToModule(moduleId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PutMapping("/modules/lessons/{lessonId}")
+    public ResponseEntity<?> updateLesson(
+            @PathVariable("lessonId")String lessonId,
+            @RequestBody UpdateLessonRequest request
+    ){
+        courseService.updateLesson(lessonId, request);
+        return ResponseEntity.noContent().build();
     }
 }
