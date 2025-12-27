@@ -16,6 +16,14 @@ import org.springframework.web.multipart.MultipartFile;
 public class CourseController {
     private final CourseService courseService;
 
+    @GetMapping("/tenants/{tenantId}")
+    public ResponseEntity<?> getCourses(
+            @PathVariable("tenantId")String tenantId
+    ){
+        var courses = courseService.getAllCourses(tenantId);
+        return ResponseEntity.ok(courses);
+    }
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createCourse(
             @RequestPart("tenantId") String tenantId,
@@ -34,12 +42,29 @@ public class CourseController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @GetMapping("/{courseId}/modules")
+    public ResponseEntity<?> getModulesByCourseId(
+            @PathVariable("courseId")String courseId
+    ){
+        var modules = courseService.getModulesByCourseId(courseId);
+        return ResponseEntity.ok(modules);
+    }
+
+
     @PostMapping("/modules/{moduleId}/lessons")
     public ResponseEntity<?> createLesson(
             @PathVariable("moduleId")String moduleId
     ){
         courseService.addLessonToModule(moduleId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @GetMapping("/modules/{moduleId}/lessons")
+    public ResponseEntity<?> getLessonsByModuleId(
+            @PathVariable("moduleId")String moduleId
+    ){
+        var lessons = courseService.getLessonsByModuleId(moduleId);
+        return ResponseEntity.ok(lessons);
     }
 
     @PutMapping("/modules/lessons/{lessonId}")

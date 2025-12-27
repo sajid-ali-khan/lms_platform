@@ -14,8 +14,6 @@ public class UploadService {
         Path uploadDir = Path.of("uploads");
         Files.createDirectories(uploadDir);
 
-        String extension = Objects.requireNonNull(thumbnailFile.getOriginalFilename()).split("\\.")[1];
-        newFileName = newFileName + "." + extension;
         Path targetPath = uploadDir.resolve(newFileName);
         Files.copy(thumbnailFile.getInputStream(), targetPath);
     }

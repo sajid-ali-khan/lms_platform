@@ -1,8 +1,11 @@
 package com.hilip.lms.services;
 
+import com.hilip.lms.dtos.course.CourseResponse;
 import com.hilip.lms.dtos.course.CreateCourseRequest;
+import com.hilip.lms.dtos.course.lessons.LessonResponse;
 import com.hilip.lms.dtos.course.lessons.UpdateLessonRequest;
 import com.hilip.lms.exceptions.ResourceNotFoundException;
+import com.hilip.lms.helper.AutoMapper;
 import com.hilip.lms.models.*;
 import com.hilip.lms.models.Module;
 import com.hilip.lms.models.enums.UserRole;
@@ -12,6 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -25,6 +31,7 @@ public class CourseService {
     private final UserRepository userRepository;
     private final ModuleRepository moduleRepository;
     private final LessonRepository lessonRepository;
+    private final AutoMapper autoMapper;
 
     public void createCourse(String tenantId, CreateCourseRequest request, MultipartFile uploadedFile) {
         Tenant tenant = tenantRepository.findById(UUID.fromString(tenantId))
@@ -41,7 +48,8 @@ public class CourseService {
         }
 
         FileResource thumbnail = new FileResource();
-        String newFileName = UUID.randomUUID().toString();
+        String extension = Objects.requireNonNull(uploadedFile.getOriginalFilename()).split("\\.")[1];
+        String newFileName = UUID.randomUUID() + "." + extension;
         thumbnail.setFileName(newFileName);
         thumbnail.setSize(uploadedFile.getSize());
         thumbnail.setMimeType(uploadedFile.getContentType());
@@ -102,5 +110,44 @@ public class CourseService {
         if (request.resourceUrl() != null) lesson.setResourceUrl(request.resourceUrl());
         if (request.isPublished() != null) lesson.setIsPublished(request.isPublished());
         lessonRepository.save(lesson);
+    }
+
+    public Map<String, String> getModulesByCourseId(String courseId) {
+        Course course = courseRepository.findById(UUID.fromString(courseId))
+                .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
+
+        var modules = course.getModules();
+        var response = new HashMap<String, String>();
+        for (var module : modules) {
+            response.put(module.getId().toString(), module.getTitle());
+        }
+        return response;
+    }
+
+    public Map<String, LessonResponse> getLessonsByModuleId(String moduleId) {
+        Module module = moduleRepository.findById(UUID.fromString(moduleId))
+                .orElseThrow(() -> new ResourceNotFoundException("Module not found"));
+
+        var lessons = module.getLessons();
+        var response = new HashMap<String, LessonResponse>();
+        for (var lesson : lessons) {
+            var lessonResponse = autoMapper.mapLessonToLessonResponse(lesson);
+            response.put(lesson.getId().toString(), lessonResponse);
+        }
+        return response;
+    }
+
+    public Map<String, CourseResponse> getAllCourses(String tenantId) {
+        Tenant tenant = tenantRepository.findById(UUID.fromString(tenantId))
+                .orElseThrow(() -> new ResourceNotFoundException("Tenant not found"));
+
+        var courses = tenant.getCourses();
+
+        var response = new HashMap<String, CourseResponse>();
+        for (var course : courses) {
+            var courseResponse = autoMapper.mapCourseToCourseResponse(course);
+            response.put(course.getId().toString(), courseResponse);
+        }
+        return response;
     }
 }

@@ -1,5 +1,7 @@
 package com.hilip.lms.helper;
 
+import com.hilip.lms.dtos.course.CourseResponse;
+import com.hilip.lms.dtos.course.lessons.LessonResponse;
 import com.hilip.lms.dtos.orgStructures.OrgStructureResponseBasic;
 import com.hilip.lms.dtos.orgUnit.OrgUnitDetails;
 import com.hilip.lms.dtos.orgUnit.OrgUnitDto;
@@ -46,4 +48,9 @@ public interface AutoMapper {
     @Mapping(target = "parent", source = "parentUnit.name")
     @Mapping(target = "type", source = "type.name")
     OrgUnitDetails mapOrgUnitToOrgUnitDetails(OrgUnit orgUnit);
+
+    @Mapping(target = "thumbnailId", source = "thumbnailFile.id")
+    CourseResponse mapCourseToCourseResponse(com.hilip.lms.models.Course course);
+
+    LessonResponse mapLessonToLessonResponse(com.hilip.lms.models.Lesson lesson);
 }
