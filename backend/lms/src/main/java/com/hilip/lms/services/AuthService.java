@@ -14,6 +14,7 @@ import java.util.Optional;
 public class AuthService {
     private final JwtUtils jwtUtils;
     private final AuthenticationManager authenticationManager;
+    private final RefreshTokenService refreshTokenService;
 
     public Optional<JwtResponse> loginUser(LoginRequest loginRequest){
         var authentication = authenticationManager.authenticate(
@@ -23,12 +24,16 @@ public class AuthService {
 
         var userDetails = (com.hilip.lms.models.User) authentication.getPrincipal();
         String jwt = jwtUtils.generateTokenFromUsername(userDetails);
+        String refreshToken = refreshTokenService.createRefreshToken(userDetails.getId()).getToken();
+
+
 
         return Optional.of(new JwtResponse(
                 jwt,
                 "Bearer",
                 userDetails.getUsername(),
                 userDetails.getRole().name(),
+                refreshToken,
                 userDetails.getTenant() != null ? userDetails.getTenant().getName() : null
         ));
     }
