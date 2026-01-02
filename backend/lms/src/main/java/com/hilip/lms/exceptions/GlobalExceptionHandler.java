@@ -22,6 +22,15 @@ public class GlobalExceptionHandler {
                 ));
     }
 
+    @ExceptionHandler(TokenRefreshException.class)
+    public ResponseEntity<?> handleTokenRefreshException(TokenRefreshException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of(
+                        "success", false,
+                        "message", ex.getMessage()
+                ));
+    }
+
     @ExceptionHandler({EmptyRequestBodyException.class})
     public ResponseEntity<?> handleEmptyRequestBody(Exception ex){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)

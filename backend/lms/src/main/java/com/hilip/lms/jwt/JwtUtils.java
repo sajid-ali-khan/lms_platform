@@ -33,7 +33,7 @@ public class JwtUtils {
         return bearerToken.substring(7);
     }
 
-    public String generateTokenFromUsername(UserDetails userDetails){
+    public String generateTokenFromUser(UserDetails userDetails){
         // Implementation for generating JWT token
         String username = userDetails.getUsername();
         return Jwts.builder()
