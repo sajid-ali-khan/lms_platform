@@ -27,6 +27,9 @@ public class FileService {
                 .orElseThrow(() -> new RuntimeException("File not found"));
 
         String filePath = "uploads/" + fileResource.getFileName();
+
+        log.debug("Fetching file from path: {}", filePath);
+
         Resource resource = new FileSystemResource(filePath);
 
         return ResponseEntity.ok()
