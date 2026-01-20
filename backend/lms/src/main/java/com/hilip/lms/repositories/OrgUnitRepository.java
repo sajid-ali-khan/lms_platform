@@ -9,27 +9,28 @@ import java.util.List;
 import java.util.UUID;
 
 public interface OrgUnitRepository extends JpaRepository<OrgUnit, UUID> {
+
+    // New methods using UUIDs
     @Query("""
         select ou from OrgUnit ou
         where ou.tenant.id = :tenantId
-        and ou.type.orgStructure.name = :structureName
-        and ou.type.name = :typeName
+        and ou.type.orgStructure.id = :structureId
+        and ou.type.id = :typeId
 """)
-    List<OrgUnit> findByTenantAndStructureAndType(UUID tenantId, String structureName, String typeName);
+    List<OrgUnit> findByTenantIdAndStructureIdAndTypeId(UUID tenantId, UUID structureId, UUID typeId);
 
     @Query("""
         select ou from OrgUnit ou
         where ou.tenant.id = :tenantId
-        and ou.type.orgStructure.name = :structureName
-        and ou.type.name = :typeName
+        and ou.type.orgStructure.id = :structureId
+        and ou.type.id = :typeId
         and ou.parentUnit.id = :parentOrgUnitId
 """)
-    List<OrgUnit> findByTenantAndStructureTypeAndParentOrgUnitId(
+    List<OrgUnit> findByTenantIdAndStructureIdAndTypeIdAndParentOrgUnitId(
             UUID tenantId,
-            String structureName,
-            String typeName,
+            UUID structureId,
+            UUID typeId,
             UUID parentOrgUnitId);
-
 
     List<OrgUnit> findAllByOrgStructure(OrgStructure orgStructure);
 

@@ -24,7 +24,9 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> authenticateUser(@RequestBody LoginRequest loginRequest) {
+        log.debug("Login attempt for user: {}", loginRequest.getUsername());
         JwtResponse jwtResponse = authService.loginUser(loginRequest);
+        log.debug("User {} logged in successfully.", loginRequest.getUsername());
         return ResponseEntity.ok(jwtResponse);
     }
 

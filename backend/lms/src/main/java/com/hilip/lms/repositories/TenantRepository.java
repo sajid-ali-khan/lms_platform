@@ -11,4 +11,5 @@ import java.util.UUID;
 public interface TenantRepository extends JpaRepository<Tenant, UUID> {
     @Query("SELECT CASE WHEN COUNT(t) > 0 THEN true ELSE false END FROM Tenant t WHERE LOWER(t.name) = LOWER(:name)")
     boolean existsByNameIgnoreCase(String name);
+
 }

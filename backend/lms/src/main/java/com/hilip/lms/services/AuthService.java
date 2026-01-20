@@ -43,10 +43,12 @@ public class AuthService {
         return new JwtResponse(
                 jwt,
                 "Bearer",
+                userDetails.getId().toString(),
                 userDetails.getUsername(),
+                userDetails.getFullName(),
                 userDetails.getRole().name(),
                 refreshToken,
-                userDetails.getTenant() != null ? userDetails.getTenant().getName() : null
+                userDetails.getTenant() != null ? userDetails.getTenant().getId().toString() : null
         );
     }
 

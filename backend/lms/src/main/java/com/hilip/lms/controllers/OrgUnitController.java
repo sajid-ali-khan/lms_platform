@@ -31,28 +31,28 @@ public class OrgUnitController {
     @GetMapping
     public ResponseEntity<?> getOrgUnits(
             @PathVariable("tenantId") String tenantId,
-            @RequestParam String structureName,
-            @RequestParam String typeName,
+            @RequestParam String structureId,
+            @RequestParam String typeId,
             @RequestParam(required = false) String parentUnitId
     ) {
-        log.debug("Fetching org units for tenantId: {}, structureName: {}, typeName: {}", tenantId, structureName, typeName);
+        log.debug("Fetching org units for tenantId: {}, structureId: {}, typeId: {}", tenantId, structureId, typeId);
         List<OrgUnitResponse> response;
         if (parentUnitId == null) {
-            response = orgUnitService.getOrgUnitsByTenantAndStructureAndType(tenantId, structureName, typeName);
+            response = orgUnitService.getOrgUnitsByTenantAndStructureAndType(tenantId, structureId, typeId);
         }else {
-            response = orgUnitService.getOrgUnitsByTenantStructureTypeAndParentUnit(tenantId, structureName, typeName, parentUnitId);
+            response = orgUnitService.getOrgUnitsByTenantStructureTypeAndParentUnit(tenantId, structureId, typeId, parentUnitId);
         }
         return ResponseEntity.ok(response);
 
     }
 
-    @GetMapping("/structure/{structureName}/tree")
+    @GetMapping("/structure/{structureId}/tree")
     public ResponseEntity<?> getOrgUnitsByTenantAndStructure(
             @PathVariable("tenantId") String tenantId,
-            @PathVariable("structureName") String structureName
+            @PathVariable("structureId") String structureId
     ){
         return ResponseEntity.ok(
-                orgUnitService.getOrgUnitsTreeByTenantAndStructure(tenantId, structureName)
+                orgUnitService.getOrgUnitsTreeByTenantAndStructure(tenantId, structureId)
         );
     }
 
