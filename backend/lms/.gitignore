@@ -32,3 +32,5 @@ build/
 ### VS Code ###
 .vscode/
 /uploads/
+/IDENTITY_FIXES_SUMMARY.md
+/MIGRATION_GUIDE.md

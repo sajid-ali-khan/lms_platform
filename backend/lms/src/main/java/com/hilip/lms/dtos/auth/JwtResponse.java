@@ -6,7 +6,9 @@ import lombok.Data;
 public final class JwtResponse {
     private final String accessToken;
     private final String type;
-    private final String username;
+    private final String userId;
+    private final String userEmail;
+    private final String fullName;
     private final String role;
     private final String refreshToken;
     private final String tenantId;

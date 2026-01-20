@@ -30,6 +30,27 @@ public interface OrgUnitRepository extends JpaRepository<OrgUnit, UUID> {
             String typeName,
             UUID parentOrgUnitId);
 
+    // New methods using UUIDs
+    @Query("""
+        select ou from OrgUnit ou
+        where ou.tenant.id = :tenantId
+        and ou.type.orgStructure.id = :structureId
+        and ou.type.id = :typeId
+""")
+    List<OrgUnit> findByTenantIdAndStructureIdAndTypeId(UUID tenantId, UUID structureId, UUID typeId);
+
+    @Query("""
+        select ou from OrgUnit ou
+        where ou.tenant.id = :tenantId
+        and ou.type.orgStructure.id = :structureId
+        and ou.type.id = :typeId
+        and ou.parentUnit.id = :parentOrgUnitId
+""")
+    List<OrgUnit> findByTenantIdAndStructureIdAndTypeIdAndParentOrgUnitId(
+            UUID tenantId,
+            UUID structureId,
+            UUID typeId,
+            UUID parentOrgUnitId);
 
     List<OrgUnit> findAllByOrgStructure(OrgStructure orgStructure);
 
