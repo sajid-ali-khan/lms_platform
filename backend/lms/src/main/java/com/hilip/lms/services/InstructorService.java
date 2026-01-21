@@ -2,7 +2,6 @@ package com.hilip.lms.services;
 
 import com.hilip.lms.dtos.course.CourseResponse;
 import com.hilip.lms.exceptions.ResourceNotFoundException;
-import com.hilip.lms.helper.AutoMapper;
 import com.hilip.lms.models.User;
 import com.hilip.lms.models.enums.UserRole;
 import com.hilip.lms.repositories.UserRepository;
@@ -19,7 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class InstructorService {
     private final UserRepository userRepository;
-    private final AutoMapper autoMapper;
+    private final CourseService courseService;
 
     public Map<String, CourseResponse> getInstructorCourses(String instructorId) {
         log.debug("Fetching courses for instructor: {}", instructorId);
@@ -35,7 +34,7 @@ public class InstructorService {
         var response = new HashMap<String, CourseResponse>();
 
         for (var course : courses) {
-            var courseResponse = autoMapper.mapCourseToCourseResponse(course);
+            var courseResponse = courseService.getCourseById(course.getId().toString());
             response.put(course.getId().toString(), courseResponse);
         }
 

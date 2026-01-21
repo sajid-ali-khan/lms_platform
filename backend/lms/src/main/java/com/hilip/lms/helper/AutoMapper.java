@@ -49,8 +49,6 @@ public interface AutoMapper {
     @Mapping(target = "type", source = "type.name")
     OrgUnitDetails mapOrgUnitToOrgUnitDetails(OrgUnit orgUnit);
 
-    @Mapping(target = "thumbnailId", source = "thumbnailFile.id")
-    CourseResponse mapCourseToCourseResponse(com.hilip.lms.models.Course course);
 
     LessonResponse mapLessonToLessonResponse(com.hilip.lms.models.Lesson lesson);
 }

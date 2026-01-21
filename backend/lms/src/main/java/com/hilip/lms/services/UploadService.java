@@ -6,7 +6,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Objects;
 
 @Service
 public class UploadService {
@@ -18,4 +17,9 @@ public class UploadService {
         Files.copy(thumbnailFile.getInputStream(), targetPath);
     }
 
+    public void deleteFile(String fileName) throws IOException {
+        Path uploadDir = Path.of("uploads");
+        Path filePath = uploadDir.resolve(fileName);
+        Files.deleteIfExists(filePath);
+    }
 }

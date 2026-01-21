@@ -1,6 +1,7 @@
 package com.hilip.lms.controllers;
 
 import com.hilip.lms.dtos.course.CreateCourseRequest;
+import com.hilip.lms.dtos.course.UpdateCourseRequest;
 import com.hilip.lms.dtos.course.lessons.UpdateLessonRequest;
 import com.hilip.lms.services.CourseService;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,14 @@ public class CourseController {
         return ResponseEntity.ok(courses);
     }
 
+    @GetMapping("/{courseId}")
+    public ResponseEntity<?> getCourseById(
+            @PathVariable("courseId") String courseId
+    ){
+        var course = courseService.getCourseById(courseId);
+        return ResponseEntity.ok(course);
+    }
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createCourse(
             @RequestPart("tenantId") String tenantId,
@@ -32,6 +41,16 @@ public class CourseController {
             ){
         courseService.createCourse(tenantId, request, thumbnailFile);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PutMapping(value = "/{courseId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> updateCourse(
+            @PathVariable("courseId") String courseId,
+            @RequestPart("data") UpdateCourseRequest request,
+            @RequestPart(value = "thumbnailFile", required = false) MultipartFile thumbnailFile
+    ){
+        courseService.updateCourse(courseId, request, thumbnailFile);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/{courseId}/modules")
