@@ -12,4 +12,5 @@ public final class JwtResponse {
     private final String role;
     private final String refreshToken;
     private final String tenantId;
+    private final String tenantName;
 }

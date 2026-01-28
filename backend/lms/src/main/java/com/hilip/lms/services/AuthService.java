@@ -48,7 +48,8 @@ public class AuthService {
                 userDetails.getFullName(),
                 userDetails.getRole().name(),
                 refreshToken,
-                userDetails.getTenant() != null ? userDetails.getTenant().getId().toString() : null
+                userDetails.getTenant() != null ? userDetails.getTenant().getId().toString() : null,
+                userDetails.getTenant() != null ? userDetails.getTenant().getName() : null
         );
     }
 
