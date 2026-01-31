@@ -1,4 +1,4 @@
-package com.hilip.lms.services;
+package com.hilip.lms.services.course;
 
 import com.hilip.lms.dtos.course.CourseResponse;
 import com.hilip.lms.dtos.course.CreateCourseRequest;
@@ -12,6 +12,7 @@ import com.hilip.lms.models.Module;
 import com.hilip.lms.models.enums.CourseStatus;
 import com.hilip.lms.models.enums.UserRole;
 import com.hilip.lms.repositories.*;
+import com.hilip.lms.services.FileStorageService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,7 +27,7 @@ import java.util.UUID;
 @Slf4j
 @AllArgsConstructor
 public class CourseService {
-    private final UploadService uploadService;
+    private final FileStorageService fileStorageService;
     private final TenantRepository tenantRepository;
     private final CourseRepository courseRepository;
     private final FileResourceRepository fileResourceRepository;
@@ -57,7 +58,7 @@ public class CourseService {
         thumbnail.setMimeType(uploadedFile.getContentType());
         thumbnail = fileResourceRepository.save(thumbnail);
         try {
-            uploadService.uploadFile(uploadedFile, newFileName);
+            fileStorageService.uploadFile(uploadedFile, newFileName);
         } catch (Exception e) {
             log.error("Error uploading file", e);
             throw new RuntimeException("Error uploading file");
@@ -206,12 +207,12 @@ public class CourseService {
             newThumbnail = fileResourceRepository.save(newThumbnail);
 
             try {
-                uploadService.uploadFile(thumbnailFile, newFileName);
+                fileStorageService.uploadFile(thumbnailFile, newFileName);
                 course.setThumbnailFile(newThumbnail);
 
                 // Delete old thumbnail file after successful upload
                 if (oldThumbnail != null) {
-                    uploadService.deleteFile(oldThumbnail.getFileName());
+                    fileStorageService.deleteFile(oldThumbnail.getFileName());
                     fileResourceRepository.delete(oldThumbnail);
                 }
             } catch (Exception e) {
@@ -239,5 +240,25 @@ public class CourseService {
                 course.getStatus(),
                 statusOptions
         );
+    }
+
+    public void deleteCourse(String courseId) {
+        Course course = courseRepository.findById(UUID.fromString(courseId))
+                .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
+
+        FileResource thumbnail = course.getThumbnailFile();
+
+        courseRepository.delete(course);
+        log.debug("Course deleted successfully: {}", courseId);
+
+        if (thumbnail != null) {
+            try {
+                fileStorageService.deleteFile(thumbnail.getFileName());
+                fileResourceRepository.delete(thumbnail);
+                log.debug("Thumbnail file deleted successfully: {}", thumbnail.getFileName());
+            } catch (Exception e) {
+                log.error("Error deleting thumbnail file: {}", thumbnail.getFileName(), e);
+            }
+        }
     }
 }

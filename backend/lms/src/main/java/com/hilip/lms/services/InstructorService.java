@@ -5,6 +5,7 @@ import com.hilip.lms.exceptions.ResourceNotFoundException;
 import com.hilip.lms.models.User;
 import com.hilip.lms.models.enums.UserRole;
 import com.hilip.lms.repositories.UserRepository;
+import com.hilip.lms.services.course.CourseService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

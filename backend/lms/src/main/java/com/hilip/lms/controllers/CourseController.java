@@ -3,7 +3,7 @@ package com.hilip.lms.controllers;
 import com.hilip.lms.dtos.course.CreateCourseRequest;
 import com.hilip.lms.dtos.course.UpdateCourseRequest;
 import com.hilip.lms.dtos.course.lessons.UpdateLessonRequest;
-import com.hilip.lms.services.CourseService;
+import com.hilip.lms.services.course.CourseService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,6 +31,14 @@ public class CourseController {
     ){
         var course = courseService.getCourseById(courseId);
         return ResponseEntity.ok(course);
+    }
+
+    @DeleteMapping("/{courseId}")
+    public ResponseEntity<?> deleteCourse(
+            @PathVariable("courseId") String courseId
+    ){
+        courseService.deleteCourse(courseId);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
