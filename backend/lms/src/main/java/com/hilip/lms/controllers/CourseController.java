@@ -4,6 +4,8 @@ import com.hilip.lms.dtos.course.CreateCourseRequest;
 import com.hilip.lms.dtos.course.UpdateCourseRequest;
 import com.hilip.lms.dtos.course.lessons.UpdateLessonRequest;
 import com.hilip.lms.services.course.CourseService;
+import com.hilip.lms.services.course.LessonService;
+import com.hilip.lms.services.course.ModuleService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,6 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 public class CourseController {
     private final CourseService courseService;
+    private final ModuleService moduleService;
+    private final LessonService lessonService;
 
     @GetMapping("/tenants/{tenantId}")
     public ResponseEntity<?> getCourses(
@@ -65,7 +69,7 @@ public class CourseController {
     public ResponseEntity<?> createModule(
             @PathVariable("courseId")String courseId
     ){
-        courseService.addModuleToCourse(courseId);
+        moduleService.addModuleToCourse(courseId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -73,7 +77,7 @@ public class CourseController {
     public ResponseEntity<?> getModulesByCourseId(
             @PathVariable("courseId")String courseId
     ){
-        var modules = courseService.getModulesByCourseId(courseId);
+        var modules = moduleService.getModulesByCourseId(courseId);
         return ResponseEntity.ok(modules);
     }
 
@@ -82,7 +86,7 @@ public class CourseController {
     public ResponseEntity<?> createLesson(
             @PathVariable("moduleId")String moduleId
     ){
-        courseService.addLessonToModule(moduleId);
+        lessonService.addLessonToModule(moduleId);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
@@ -90,7 +94,7 @@ public class CourseController {
     public ResponseEntity<?> getLessonsByModuleId(
             @PathVariable("moduleId")String moduleId
     ){
-        var lessons = courseService.getLessonsByModuleId(moduleId);
+        var lessons = lessonService.getLessonsByModuleId(moduleId);
         return ResponseEntity.ok(lessons);
     }
 
@@ -99,7 +103,7 @@ public class CourseController {
             @PathVariable("lessonId")String lessonId,
             @RequestBody UpdateLessonRequest request
     ){
-        courseService.updateLesson(lessonId, request);
+        lessonService.updateLesson(lessonId, request);
         return ResponseEntity.noContent().build();
     }
 }

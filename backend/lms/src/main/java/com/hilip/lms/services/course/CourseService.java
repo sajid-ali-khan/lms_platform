@@ -3,12 +3,8 @@ package com.hilip.lms.services.course;
 import com.hilip.lms.dtos.course.CourseResponse;
 import com.hilip.lms.dtos.course.CreateCourseRequest;
 import com.hilip.lms.dtos.course.UpdateCourseRequest;
-import com.hilip.lms.dtos.course.lessons.LessonResponse;
-import com.hilip.lms.dtos.course.lessons.UpdateLessonRequest;
 import com.hilip.lms.exceptions.ResourceNotFoundException;
-import com.hilip.lms.helper.AutoMapper;
 import com.hilip.lms.models.*;
-import com.hilip.lms.models.Module;
 import com.hilip.lms.models.enums.CourseStatus;
 import com.hilip.lms.models.enums.UserRole;
 import com.hilip.lms.repositories.*;
@@ -32,9 +28,6 @@ public class CourseService {
     private final CourseRepository courseRepository;
     private final FileResourceRepository fileResourceRepository;
     private final UserRepository userRepository;
-    private final ModuleRepository moduleRepository;
-    private final LessonRepository lessonRepository;
-    private final AutoMapper autoMapper;
 
     public void createCourse(String tenantId, CreateCourseRequest request, MultipartFile uploadedFile) {
         Tenant tenant = tenantRepository.findById(UUID.fromString(tenantId))
@@ -74,77 +67,9 @@ public class CourseService {
         courseRepository.save(newCourse);
     }
 
-    public void addModuleToCourse(String courseId) {
-        Course course = courseRepository.findById(UUID.fromString(courseId))
-                .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
-
-        var module = new Module();
-        int sequenceOrder = course.getModules().size() + 1;
-        module.setTitle("Module " + sequenceOrder);
-        module.setSequenceOrder(sequenceOrder);
-        module.setIsPublished(true);
-        module.setCourse(course);
-
-        course.getModules().add(module);
-        courseRepository.save(course);
-    }
-
-    public void addLessonToModule(String moduleId) {
-        Module module = moduleRepository.findById(UUID.fromString(moduleId))
-                .orElseThrow(() -> new ResourceNotFoundException("Module not found"));
-
-        var lesson = new com.hilip.lms.models.Lesson();
-        int sequenceOrder = module.getLessons().size() + 1;
-        lesson.setTitle("Lesson " + sequenceOrder);
-        lesson.setSequenceOrder(sequenceOrder);
-        lesson.setIsPublished(true);
-        lesson.setModule(module);
-        module.getLessons().add(lesson);
-        moduleRepository.save(module);
-    }
-
-    public void updateLesson(String lessonId, UpdateLessonRequest request) {
-        Lesson lesson = lessonRepository.findById(UUID.fromString(lessonId))
-                .orElseThrow(() -> new ResourceNotFoundException("Lesson not found"));
-
-        lesson.setTitle(request.title());
-        lesson.setContent(request.content());
-        lesson.setType(request.type());
-        if (request.resourceUrl() != null) lesson.setResourceUrl(request.resourceUrl());
-        if (request.isPublished() != null) lesson.setIsPublished(request.isPublished());
-        lessonRepository.save(lesson);
-    }
-
-    public Map<String, String> getModulesByCourseId(String courseId) {
-        Course course = courseRepository.findById(UUID.fromString(courseId))
-                .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
-
-        var modules = course.getModules();
-        var response = new HashMap<String, String>();
-        for (var module : modules) {
-            response.put(module.getId().toString(), module.getTitle());
-        }
-        return response;
-    }
-
-    public Map<String, LessonResponse> getLessonsByModuleId(String moduleId) {
-        Module module = moduleRepository.findById(UUID.fromString(moduleId))
-                .orElseThrow(() -> new ResourceNotFoundException("Module not found"));
-
-        var lessons = module.getLessons();
-        var response = new HashMap<String, LessonResponse>();
-        for (var lesson : lessons) {
-            var lessonResponse = autoMapper.mapLessonToLessonResponse(lesson);
-            response.put(lesson.getId().toString(), lessonResponse);
-        }
-        return response;
-    }
-
     public Map<String, CourseResponse> getAllCourses(String tenantId) {
-        Tenant tenant = tenantRepository.findById(UUID.fromString(tenantId))
-                .orElseThrow(() -> new ResourceNotFoundException("Tenant not found"));
-
-        var courses = tenant.getCourses();
+        // Use optimized query that fetches courses with thumbnails in single query
+        var courses = courseRepository.findAllByTenantIdWithThumbnail(UUID.fromString(tenantId));
 
         var response = new HashMap<String, CourseResponse>();
         for (var course : courses) {
@@ -226,22 +151,6 @@ public class CourseService {
         log.info("Course updated successfully: {}", courseId);
     }
 
-    private CourseResponse mapCourseToCourseResponse(Course course) {
-        Map<CourseStatus, Boolean> statusOptions = new HashMap<>();
-        for (CourseStatus status : CourseStatus.values()) {
-            statusOptions.put(status, status.equals(course.getStatus()));
-        }
-
-        return new CourseResponse(
-                course.getId().toString(),
-                course.getTitle(),
-                course.getDescription(),
-                course.getThumbnailFile() != null ? course.getThumbnailFile().getId().toString() : null,
-                course.getStatus(),
-                statusOptions
-        );
-    }
-
     public void deleteCourse(String courseId) {
         Course course = courseRepository.findById(UUID.fromString(courseId))
                 .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
@@ -260,5 +169,21 @@ public class CourseService {
                 log.error("Error deleting thumbnail file: {}", thumbnail.getFileName(), e);
             }
         }
+    }
+
+    private CourseResponse mapCourseToCourseResponse(Course course) {
+        Map<CourseStatus, Boolean> statusOptions = new HashMap<>();
+        for (CourseStatus status : CourseStatus.values()) {
+            statusOptions.put(status, status.equals(course.getStatus()));
+        }
+
+        return new CourseResponse(
+                course.getId().toString(),
+                course.getTitle(),
+                course.getDescription(),
+                course.getThumbnailFile() != null ? course.getThumbnailFile().getId().toString() : null,
+                course.getStatus(),
+                statusOptions
+        );
     }
 }
