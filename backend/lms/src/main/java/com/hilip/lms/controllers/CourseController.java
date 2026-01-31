@@ -2,10 +2,7 @@ package com.hilip.lms.controllers;
 
 import com.hilip.lms.dtos.course.CreateCourseRequest;
 import com.hilip.lms.dtos.course.UpdateCourseRequest;
-import com.hilip.lms.dtos.course.lessons.UpdateLessonRequest;
 import com.hilip.lms.services.course.CourseService;
-import com.hilip.lms.services.course.LessonService;
-import com.hilip.lms.services.course.ModuleService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,13 +15,11 @@ import org.springframework.web.multipart.MultipartFile;
 @AllArgsConstructor
 public class CourseController {
     private final CourseService courseService;
-    private final ModuleService moduleService;
-    private final LessonService lessonService;
 
     @GetMapping("/tenants/{tenantId}")
     public ResponseEntity<?> getCourses(
-            @PathVariable("tenantId")String tenantId
-    ){
+            @PathVariable("tenantId") String tenantId
+    ) {
         var courses = courseService.getAllCourses(tenantId);
         return ResponseEntity.ok(courses);
     }
@@ -32,7 +27,7 @@ public class CourseController {
     @GetMapping("/{courseId}")
     public ResponseEntity<?> getCourseById(
             @PathVariable("courseId") String courseId
-    ){
+    ) {
         var course = courseService.getCourseById(courseId);
         return ResponseEntity.ok(course);
     }
@@ -40,7 +35,7 @@ public class CourseController {
     @DeleteMapping("/{courseId}")
     public ResponseEntity<?> deleteCourse(
             @PathVariable("courseId") String courseId
-    ){
+    ) {
         courseService.deleteCourse(courseId);
         return ResponseEntity.noContent().build();
     }
@@ -48,9 +43,9 @@ public class CourseController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createCourse(
             @RequestPart("tenantId") String tenantId,
-            @RequestPart("thumbnailFile")MultipartFile thumbnailFile,
+            @RequestPart("thumbnailFile") MultipartFile thumbnailFile,
             @RequestPart("data") CreateCourseRequest request
-            ){
+    ) {
         courseService.createCourse(tenantId, request, thumbnailFile);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
@@ -60,50 +55,8 @@ public class CourseController {
             @PathVariable("courseId") String courseId,
             @RequestPart("data") UpdateCourseRequest request,
             @RequestPart(value = "thumbnailFile", required = false) MultipartFile thumbnailFile
-    ){
+    ) {
         courseService.updateCourse(courseId, request, thumbnailFile);
-        return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping("/{courseId}/modules")
-    public ResponseEntity<?> createModule(
-            @PathVariable("courseId")String courseId
-    ){
-        moduleService.addModuleToCourse(courseId);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @GetMapping("/{courseId}/modules")
-    public ResponseEntity<?> getModulesByCourseId(
-            @PathVariable("courseId")String courseId
-    ){
-        var modules = moduleService.getModulesByCourseId(courseId);
-        return ResponseEntity.ok(modules);
-    }
-
-
-    @PostMapping("/modules/{moduleId}/lessons")
-    public ResponseEntity<?> createLesson(
-            @PathVariable("moduleId")String moduleId
-    ){
-        lessonService.addLessonToModule(moduleId);
-        return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
-    @GetMapping("/modules/{moduleId}/lessons")
-    public ResponseEntity<?> getLessonsByModuleId(
-            @PathVariable("moduleId")String moduleId
-    ){
-        var lessons = lessonService.getLessonsByModuleId(moduleId);
-        return ResponseEntity.ok(lessons);
-    }
-
-    @PutMapping("/modules/lessons/{lessonId}")
-    public ResponseEntity<?> updateLesson(
-            @PathVariable("lessonId")String lessonId,
-            @RequestBody UpdateLessonRequest request
-    ){
-        lessonService.updateLesson(lessonId, request);
         return ResponseEntity.noContent().build();
     }
 }
