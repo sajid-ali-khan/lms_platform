@@ -95,7 +95,6 @@ public class OrgUnitService {
         OrgStructure orgStructure = orgStructureRepository.findById(UUID.fromString(structureId))
                 .orElseThrow(() -> new ResourceNotFoundException("Org Structure not found"));
 
-        // Verify that the structure belongs to the tenant
         if (!orgStructure.getTenant().getId().equals(tenant.getId())) {
             throw new IllegalArgumentException("Org Structure does not belong to the specified tenant");
         }

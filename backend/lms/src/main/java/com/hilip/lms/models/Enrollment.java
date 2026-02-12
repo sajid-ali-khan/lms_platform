@@ -35,9 +35,9 @@ public class Enrollment {
     private LocalDateTime completedAt;
 
     @Column(nullable = false)
-    private String status; // ACTIVE, COMPLETED, DROPPED
+    private String status;
 
-    private Double progress; // 0.0 to 100.0
+    private Double progress;
 
     @Column(name = "final_grade")
     private Double finalGrade;

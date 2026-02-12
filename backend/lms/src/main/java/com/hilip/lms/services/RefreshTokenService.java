@@ -67,10 +67,8 @@ public class RefreshTokenService {
             throw new TokenRefreshException("Refresh token has expired. Please login again.");
         }
 
-        // Generate new JWT
         String newJwt = jwtUtils.generateTokenFromUser(token.getUser());
 
-        // Token rotation: generate new refresh token for security
         token.setToken(UUID.randomUUID().toString());
         token.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
         refreshTokenRepository.save(token);

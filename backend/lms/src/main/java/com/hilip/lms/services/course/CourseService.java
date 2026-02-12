@@ -68,7 +68,6 @@ public class CourseService {
     }
 
     public Map<String, CourseResponse> getAllCourses(String tenantId) {
-        // Use optimized query that fetches courses with thumbnails in single query
         var courses = courseRepository.findAllByTenantIdWithThumbnail(UUID.fromString(tenantId));
 
         var response = new HashMap<String, CourseResponse>();
@@ -90,7 +89,6 @@ public class CourseService {
         Course course = courseRepository.findById(UUID.fromString(courseId))
                 .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
 
-        // Update basic fields
         if (request.title() != null && !request.title().isBlank()) {
             course.setTitle(request.title());
         }
@@ -103,7 +101,6 @@ public class CourseService {
             course.setStatus(request.status());
         }
 
-        // Update instructor if provided
         if (request.instructorId() != null && !request.instructorId().isBlank()) {
             User instructor = userRepository.findById(UUID.fromString(request.instructorId()))
                     .orElseThrow(() -> new ResourceNotFoundException("Instructor not found"));
@@ -119,7 +116,6 @@ public class CourseService {
             course.setInstructor(instructor);
         }
 
-        // Update thumbnail if provided
         if (thumbnailFile != null && !thumbnailFile.isEmpty()) {
             FileResource oldThumbnail = course.getThumbnailFile();
 
@@ -135,7 +131,6 @@ public class CourseService {
                 fileStorageService.uploadFile(thumbnailFile, newFileName);
                 course.setThumbnailFile(newThumbnail);
 
-                // Delete old thumbnail file after successful upload
                 if (oldThumbnail != null) {
                     fileStorageService.deleteFile(oldThumbnail.getFileName());
                     fileResourceRepository.delete(oldThumbnail);

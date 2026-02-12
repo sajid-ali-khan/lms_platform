@@ -24,7 +24,7 @@ public class Module {
     private Course course;
 
     @Column(nullable = false, name = "sequence_order")
-    private Integer sequenceOrder; // For ordering modules within a course
+    private Integer sequenceOrder;
 
     @Column(nullable = false)
     private Boolean isPublished = false;

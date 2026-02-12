@@ -40,7 +40,7 @@ public class Course {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private CourseStatus status; // DRAFT, PUBLISHED, ARCHIVED
+    private CourseStatus status;
 
     @Column(nullable = false, updatable = false)
     private Instant createdAt;
@@ -52,10 +52,10 @@ public class Course {
     private List<Module> modules = new ArrayList<>();
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE)
-    private List<Enrollment> enrollments = new ArrayList<>(); // all enrollments for this course(super set to courseAllocations)
+    private List<Enrollment> enrollments = new ArrayList<>();
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.REMOVE)
-    private List<CourseAllocation> courseAllocations = new ArrayList<>(); // made must for students
+    private List<CourseAllocation> courseAllocations = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {

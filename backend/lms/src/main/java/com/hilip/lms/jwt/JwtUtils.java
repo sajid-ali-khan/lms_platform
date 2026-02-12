@@ -34,12 +34,10 @@ public class JwtUtils {
     }
 
     public String generateTokenFromUser(UserDetails userDetails){
-        // Implementation for generating JWT token
         String username = userDetails.getUsername();
         return Jwts.builder()
                 .subject(username)
                 .issuedAt(new Date())
-//                .expiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .expiration(Date.from(LocalDate.now().plusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant()))
                 .signWith(key())
                 .compact();

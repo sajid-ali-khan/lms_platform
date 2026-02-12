@@ -29,7 +29,6 @@ public class LessonService {
                 .orElseThrow(() -> new ResourceNotFoundException("Module not found"));
 
         var lesson = new Lesson();
-        // Use count query instead of loading all lessons to get size
         int sequenceOrder = lessonRepository.countByModuleId(UUID.fromString(moduleId)) + 1;
         lesson.setTitle("Lesson " + sequenceOrder);
         lesson.setSequenceOrder(sequenceOrder);
@@ -54,7 +53,6 @@ public class LessonService {
     }
 
     public Map<String, LessonResponse> getLessonsByModuleId(String moduleId) {
-        // Use direct query instead of loading module and navigating to lessons
         var lessons = lessonRepository.findAllByModuleIdOrderBySequenceOrder(UUID.fromString(moduleId));
 
         var response = new HashMap<String, LessonResponse>();

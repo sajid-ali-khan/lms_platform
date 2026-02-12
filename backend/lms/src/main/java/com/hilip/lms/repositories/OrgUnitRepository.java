@@ -10,7 +10,6 @@ import java.util.UUID;
 
 public interface OrgUnitRepository extends JpaRepository<OrgUnit, UUID> {
 
-    // New methods using UUIDs
     @Query("""
         select ou from OrgUnit ou
         where ou.tenant.id = :tenantId

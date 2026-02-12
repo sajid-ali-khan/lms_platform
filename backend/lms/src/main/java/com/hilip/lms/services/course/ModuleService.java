@@ -1,5 +1,6 @@
 package com.hilip.lms.services.course;
 
+import com.hilip.lms.dtos.course.modules.ModuleResponse;
 import com.hilip.lms.exceptions.ResourceNotFoundException;
 import com.hilip.lms.models.Course;
 import com.hilip.lms.models.Module;
@@ -9,9 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -25,7 +24,6 @@ public class ModuleService {
                 .orElseThrow(() -> new ResourceNotFoundException("Course not found"));
 
         var module = new Module();
-        // Use count query instead of loading all modules to get size
         int sequenceOrder = moduleRepository.countByCourseId(UUID.fromString(courseId)) + 1;
         module.setTitle("Module " + sequenceOrder);
         module.setSequenceOrder(sequenceOrder);
@@ -36,19 +34,23 @@ public class ModuleService {
         log.debug("Module added to course: {}", courseId);
     }
 
-    public Map<String, String> getModulesByCourseId(String courseId) {
-        // Use direct query instead of loading course and navigating to modules
+    public List<ModuleResponse> getModulesByCourseId(String courseId) {
         var modules = moduleRepository.findAllByCourseIdOrderBySequenceOrder(UUID.fromString(courseId));
 
-        var response = new HashMap<String, String>();
-        for (var module : modules) {
-            response.put(module.getId().toString(), module.getTitle());
+        List<ModuleResponse> moduleResponses = new ArrayList<>();
+        for (Module module : modules) {
+            Map<String, String> lessonsMap = new HashMap<>();
+            module.getLessons().forEach(lesson ->
+                    lessonsMap.put(lesson.getId().toString(), lesson.getTitle())
+            );
+            ModuleResponse moduleResponse = new ModuleResponse(
+                    module.getId().toString(),
+                    module.getTitle(),
+                    lessonsMap
+            );
+            moduleResponses.add(moduleResponse);
         }
-        return response;
+        return moduleResponses;
     }
 
-    public Module getModuleById(String moduleId) {
-        return moduleRepository.findById(UUID.fromString(moduleId))
-                .orElseThrow(() -> new ResourceNotFoundException("Module not found"));
-    }
 }

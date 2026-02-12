@@ -29,12 +29,12 @@ public class Lesson {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private LessonType type = LessonType.VIDEO; // VIDEO, TEXT, DOCUMENT, QUIZ, ASSIGNMENT
+    private LessonType type = LessonType.VIDEO;
 
     @Column(nullable = false, name = "sequence_order")
     private Integer sequenceOrder;
 
-    private String resourceUrl; // For videos, documents, etc.
+    private String resourceUrl;
 
     @Column(nullable = false)
     private Boolean isPublished = false;

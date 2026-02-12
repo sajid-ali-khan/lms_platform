@@ -15,4 +15,5 @@ public interface ModuleRepository extends JpaRepository<Module, UUID> {
 
     @Query("SELECT COUNT(m) FROM Module m WHERE m.course.id = :courseId")
     int countByCourseId(@Param("courseId") UUID courseId);
+
 }
