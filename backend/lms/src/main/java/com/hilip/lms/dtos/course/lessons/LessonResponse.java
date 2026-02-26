@@ -5,6 +5,7 @@ public record LessonResponse(
         String title,
         String content,
         String type,
+        Integer sequenceOrder,
         String resourceUrl,
         Boolean isPublished
 ) {

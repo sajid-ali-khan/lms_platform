@@ -1,10 +1,13 @@
 package com.hilip.lms.dtos.course.modules;
 
-import java.util.Map;
+import com.hilip.lms.dtos.course.lessons.LessonResponse;
+
+import java.util.List;
 
 public record ModuleResponse(
         String id,
-        String moduleTitle,
-        Map<String, String> lessons
+        String title,
+        Integer sequenceOrder,
+        List<LessonResponse> lessons
 ) {
 }
