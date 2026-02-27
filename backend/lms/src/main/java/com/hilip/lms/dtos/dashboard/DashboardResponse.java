@@ -1,6 +1,5 @@
 package com.hilip.lms.dtos.dashboard;
 
-import java.util.List;
 import java.util.Map;
 
 public record DashboardResponse(

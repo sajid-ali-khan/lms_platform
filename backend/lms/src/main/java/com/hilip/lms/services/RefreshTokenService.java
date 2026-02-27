@@ -2,7 +2,6 @@ package com.hilip.lms.services;
 
 import com.hilip.lms.exceptions.ResourceNotFoundException;
 import com.hilip.lms.exceptions.TokenRefreshException;
-import com.hilip.lms.jwt.JwtUtils;
 import com.hilip.lms.models.RefreshToken;
 import com.hilip.lms.models.User;
 import com.hilip.lms.repositories.RefreshTokenRepository;
@@ -22,12 +21,12 @@ public class RefreshTokenService {
 
     private final RefreshTokenRepository refreshTokenRepository;
     private final UserRepository userRepository;
-    private final JwtUtils jwtUtils;
+    private final JwtTokenService jwtTokenService;
 
-    public RefreshTokenService(RefreshTokenRepository repo, UserRepository userRepo, JwtUtils jwtUtils) {
+    public RefreshTokenService(RefreshTokenRepository repo, UserRepository userRepo, JwtTokenService jwtTokenService) {
         this.refreshTokenRepository = repo;
         this.userRepository = userRepo;
-        this.jwtUtils = jwtUtils;
+        this.jwtTokenService = jwtTokenService;
     }
 
     @Transactional
@@ -67,7 +66,7 @@ public class RefreshTokenService {
             throw new TokenRefreshException("Refresh token has expired. Please login again.");
         }
 
-        String newJwt = jwtUtils.generateTokenFromUser(token.getUser());
+        String newJwt = jwtTokenService.generateToken(token.getUser());
 
         token.setToken(UUID.randomUUID().toString());
         token.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));

@@ -3,7 +3,6 @@ package com.hilip.lms.services;
 import com.hilip.lms.dtos.auth.JwtResponse;
 import com.hilip.lms.dtos.auth.LoginRequest;
 import com.hilip.lms.exceptions.EmptyRequestBodyException;
-import com.hilip.lms.jwt.JwtUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class AuthService {
-    private final JwtUtils jwtUtils;
+    private final JwtTokenService jwtTokenService;
     private final AuthenticationManager authenticationManager;
     private final RefreshTokenService refreshTokenService;
 
@@ -37,7 +36,7 @@ public class AuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         var userDetails = (com.hilip.lms.models.User) authentication.getPrincipal();
-        String jwt = jwtUtils.generateTokenFromUser(userDetails);
+        String jwt = jwtTokenService.generateToken(userDetails);
         String refreshToken = refreshTokenService.createRefreshToken(userDetails.getId()).getToken();
 
         return new JwtResponse(

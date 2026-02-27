@@ -2,7 +2,6 @@ package com.hilip.lms.models;
 
 import com.hilip.lms.models.enums.LessonType;
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

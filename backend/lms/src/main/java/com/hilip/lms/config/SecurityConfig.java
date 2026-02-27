@@ -1,8 +1,7 @@
 package com.hilip.lms.config;
 
-import com.hilip.lms.jwt.AuthTokenFilter;
 import com.hilip.lms.services.UserDetailsService;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -16,21 +15,28 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.security.Security;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.util.Base64;
 import java.util.List;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@AllArgsConstructor
 public class SecurityConfig {
-    UserDetailsService userDetailsService;
-    AuthTokenFilter authTokenFilter;
+    private final UserDetailsService userDetailsService;
+
+    public SecurityConfig(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -49,6 +55,15 @@ public class SecurityConfig {
     }
 
     @Bean
+    public JwtDecoder jwtDecoder(@Value("${app.jwtSecret}") String jwtSecret) {
+        byte[] keyBytes = Base64.getDecoder().decode(jwtSecret);
+        SecretKey secretKey = new SecretKeySpec(keyBytes, "HmacSHA256");
+        return NimbusJwtDecoder.withSecretKey(secretKey)
+                .macAlgorithm(MacAlgorithm.HS256)
+                .build();
+    }
+
+    @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http){
         http
                 .cors(Customizer.withDefaults())
@@ -58,10 +73,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
                         .anyRequest().authenticated()
-                );
+                )
+                .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
 
         http.authenticationProvider(authenticationProvider());
-        http.addFilterBefore(authTokenFilter, org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

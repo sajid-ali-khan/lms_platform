@@ -33,3 +33,6 @@ build/
 .vscode/
 /uploads/
 /IDENTITY_FIXES_SUMMARY.md
+
+### Environment ###
+.env

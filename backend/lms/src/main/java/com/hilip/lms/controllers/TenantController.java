@@ -1,7 +1,6 @@
 package com.hilip.lms.controllers;
 
 import com.hilip.lms.dtos.tenant.CreateTenantAndAdminRequest;
-import com.hilip.lms.dtos.tenant.TenantCreateDto;
 import com.hilip.lms.services.TenantService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
