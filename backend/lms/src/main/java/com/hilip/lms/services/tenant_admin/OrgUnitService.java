@@ -1,4 +1,4 @@
-package com.hilip.lms.services;
+package com.hilip.lms.services.tenant_admin;
 
 import com.hilip.lms.dtos.orgUnit.CreateOrgUnitRequest;
 import com.hilip.lms.dtos.orgUnit.OrgUnitDetails;

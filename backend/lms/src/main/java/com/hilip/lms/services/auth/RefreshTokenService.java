@@ -1,4 +1,4 @@
-package com.hilip.lms.services;
+package com.hilip.lms.services.auth;
 
 import com.hilip.lms.exceptions.ResourceNotFoundException;
 import com.hilip.lms.exceptions.TokenRefreshException;
@@ -6,6 +6,7 @@ import com.hilip.lms.models.RefreshToken;
 import com.hilip.lms.models.User;
 import com.hilip.lms.repositories.RefreshTokenRepository;
 import com.hilip.lms.repositories.UserRepository;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

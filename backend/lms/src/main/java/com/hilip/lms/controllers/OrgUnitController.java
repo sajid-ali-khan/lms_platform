@@ -2,7 +2,7 @@ package com.hilip.lms.controllers;
 
 import com.hilip.lms.dtos.orgUnit.CreateOrgUnitRequest;
 import com.hilip.lms.dtos.orgUnit.OrgUnitResponse;
-import com.hilip.lms.services.OrgUnitService;
+import com.hilip.lms.services.tenant_admin.OrgUnitService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

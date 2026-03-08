@@ -1,4 +1,4 @@
-package com.hilip.lms.services;
+package com.hilip.lms.services.auth;
 
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package com.hilip.lms.services;
+package com.hilip.lms.services.super_admin;
 
 import com.hilip.lms.dtos.tenant.CreateTenantAndAdminRequest;
 import com.hilip.lms.dtos.tenant.TenantAndAdminResponse;
@@ -12,6 +12,8 @@ import com.hilip.lms.models.User;
 import com.hilip.lms.models.enums.UserRole;
 import com.hilip.lms.repositories.TenantRepository;
 import com.hilip.lms.repositories.UserRepository;
+import com.hilip.lms.services.auth.RandomPasswordGenerator;
+
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -1,4 +1,4 @@
-package com.hilip.lms.services;
+package com.hilip.lms.services.auth;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import org.springframework.beans.factory.annotation.Value;

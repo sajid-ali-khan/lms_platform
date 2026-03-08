@@ -1,6 +1,6 @@
 package com.hilip.lms.controllers;
 
-import com.hilip.lms.services.DashboardService;
+import com.hilip.lms.services.tenant_admin.DashboardService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

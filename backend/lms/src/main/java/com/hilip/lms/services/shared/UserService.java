@@ -1,4 +1,4 @@
-package com.hilip.lms.services;
+package com.hilip.lms.services.shared;
 
 import com.hilip.lms.dtos.user.CreateUserRequest;
 import com.hilip.lms.dtos.user.UserResponse;

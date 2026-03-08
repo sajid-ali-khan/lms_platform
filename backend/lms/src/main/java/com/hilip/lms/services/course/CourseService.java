@@ -8,7 +8,8 @@ import com.hilip.lms.models.*;
 import com.hilip.lms.models.enums.CourseStatus;
 import com.hilip.lms.models.enums.UserRole;
 import com.hilip.lms.repositories.*;
-import com.hilip.lms.services.FileStorageService;
+import com.hilip.lms.services.shared.FileStorageService;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

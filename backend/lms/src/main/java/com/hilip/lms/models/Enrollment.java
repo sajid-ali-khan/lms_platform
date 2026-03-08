@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 @Getter
@@ -29,9 +29,9 @@ public class Enrollment {
     private CourseAllocation courseAllocation;
 
     @Column(nullable = false)
-    private LocalDateTime enrolledAt;
+    private Instant enrolledAt;
 
-    private LocalDateTime completedAt;
+    private Instant completedAt;
 
     @Column(nullable = false)
     private String status;
@@ -40,4 +40,10 @@ public class Enrollment {
 
     @Column(name = "final_grade")
     private Double finalGrade;
+
+    @PrePersist
+    private void beforeCreating(){
+        this.enrolledAt = Instant.now();
+        this.status = "incomplete";
+    }
 }

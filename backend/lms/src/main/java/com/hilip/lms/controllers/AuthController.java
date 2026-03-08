@@ -2,8 +2,9 @@ package com.hilip.lms.controllers;
 
 import com.hilip.lms.dtos.auth.JwtResponse;
 import com.hilip.lms.dtos.auth.LoginRequest;
-import com.hilip.lms.services.AuthService;
-import com.hilip.lms.services.RefreshTokenService;
+import com.hilip.lms.services.auth.AuthService;
+import com.hilip.lms.services.auth.RefreshTokenService;
+
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

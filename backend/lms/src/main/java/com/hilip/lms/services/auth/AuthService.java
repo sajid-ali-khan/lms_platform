@@ -1,8 +1,9 @@
-package com.hilip.lms.services;
+package com.hilip.lms.services.auth;
 
 import com.hilip.lms.dtos.auth.JwtResponse;
 import com.hilip.lms.dtos.auth.LoginRequest;
 import com.hilip.lms.exceptions.EmptyRequestBodyException;
+
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

@@ -1,4 +1,4 @@
-package com.hilip.lms.services;
+package com.hilip.lms.services.auth;
 
 import com.hilip.lms.models.User;
 import com.hilip.lms.repositories.UserRepository;

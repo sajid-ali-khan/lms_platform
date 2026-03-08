@@ -1,4 +1,4 @@
-package com.hilip.lms.services;
+package com.hilip.lms.services.instructor;
 
 import com.hilip.lms.dtos.course.CourseResponse;
 import com.hilip.lms.exceptions.ResourceNotFoundException;

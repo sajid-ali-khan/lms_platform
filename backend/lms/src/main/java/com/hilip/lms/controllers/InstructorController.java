@@ -1,9 +1,10 @@
 package com.hilip.lms.controllers;
 
-import com.hilip.lms.services.InstructorService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.hilip.lms.services.instructor.InstructorService;
 
 @RestController
 @RequestMapping("/api/instructors")
