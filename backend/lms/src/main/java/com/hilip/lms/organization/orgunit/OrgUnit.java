@@ -1,0 +1,46 @@
+package com.hilip.lms.organization.orgunit;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import java.util.*;
+
+import com.hilip.lms.organization.orgstructure.OrgStructure;
+import com.hilip.lms.organization.orgunittype.*;
+import com.hilip.lms.tenant.*;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "org_units")
+public class OrgUnit {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+    private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "type_id")
+    private OrgUnitType type;
+
+    @ManyToOne
+    @JoinColumn(name = "parent_unit_id")
+    private OrgUnit parentUnit;
+
+    @ManyToOne
+    @JoinColumn(name = "org_structure_id", nullable = false)
+    private OrgStructure orgStructure;
+
+    @ManyToOne
+    @JoinColumn
+    private Tenant tenant;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    private Map<String, String> attributes = new HashMap<>();
+
+    @OneToMany(mappedBy = "parentUnit", cascade = CascadeType.REMOVE)
+    private List<OrgUnit> childUnits = new ArrayList<>();
+}
