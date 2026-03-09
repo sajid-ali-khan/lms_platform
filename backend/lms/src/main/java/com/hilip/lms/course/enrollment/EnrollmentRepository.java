@@ -18,4 +18,11 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, UUID>{
     List<Course> findAllEnrolledCoursesByLearnerId(UUID learnerId);
 
     boolean existsByLearnerIdAndCourseId(UUID learnerId, UUID courseId);
+
+    @Query("""
+            SELECT e FROM Enrollment e
+            JOIN FETCH e.learner
+            WHERE e.course.id = :courseId
+            """)
+    List<Enrollment> findAllByCourseIdWithLearner(UUID courseId);
 }

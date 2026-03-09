@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.hilip.lms.course.dto.AllocateCourseRequest;
 import com.hilip.lms.course.dto.CreateCourseRequest;
 import com.hilip.lms.course.dto.UpdateCourseRequest;
 
@@ -15,6 +16,7 @@ import com.hilip.lms.course.dto.UpdateCourseRequest;
 @AllArgsConstructor
 public class CourseController {
     private final CourseService courseService;
+    private final CourseAllocationService courseAllocationService;
 
     @GetMapping("/tenants/{tenantId}")
     public ResponseEntity<?> getCourses(
@@ -57,6 +59,32 @@ public class CourseController {
             @RequestPart(value = "thumbnailFile", required = false) MultipartFile thumbnailFile
     ) {
         courseService.updateCourse(courseId, request, thumbnailFile);
+        return ResponseEntity.noContent().build();
+    }
+
+    // ─── Course Allocations (Course → Org Unit) ─────────────────────────────
+
+    @PostMapping("/{courseId}/allocations")
+    public ResponseEntity<?> allocateCourse(
+            @PathVariable("courseId") String courseId,
+            @RequestBody AllocateCourseRequest request
+    ) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(courseAllocationService.allocateCourse(courseId, request));
+    }
+
+    @GetMapping("/{courseId}/allocations")
+    public ResponseEntity<?> getCourseAllocations(
+            @PathVariable("courseId") String courseId
+    ) {
+        return ResponseEntity.ok(courseAllocationService.getCourseAllocations(courseId));
+    }
+
+    @DeleteMapping("/{courseId}/allocations/{orgUnitId}")
+    public ResponseEntity<?> removeAllocation(
+            @PathVariable("courseId") String courseId,
+            @PathVariable("orgUnitId") String orgUnitId
+    ) {
+        courseAllocationService.removeAllocation(courseId, orgUnitId);
         return ResponseEntity.noContent().build();
     }
 }

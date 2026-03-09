@@ -6,12 +6,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.hilip.lms.user.dto.CreateUserRequest;
+import com.hilip.lms.user.userorgunit.UserOrgUnitService;
+import com.hilip.lms.user.userorgunit.dto.AssignOrgUnitRequest;
 
 @RestController
 @RequestMapping("/api/tenants/{tenantId}/users")
 @AllArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final UserOrgUnitService userOrgUnitService;
 
     @PostMapping
     public ResponseEntity<?> createUser(
@@ -34,5 +37,34 @@ public class UserController {
             @PathVariable("tenantId") String tenantId
     ) {
         return ResponseEntity.ok(userService.getAllUsersOfTenant(tenantId));
+    }
+
+    // ─── User Org Unit Assignments ───────────────────────────────────────────
+
+    @PostMapping("/{userId}/org-units")
+    public ResponseEntity<?> assignOrgUnit(
+            @PathVariable("tenantId") String tenantId,
+            @PathVariable("userId") String userId,
+            @RequestBody AssignOrgUnitRequest request
+    ) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userOrgUnitService.assignOrgUnit(userId, request));
+    }
+
+    @GetMapping("/{userId}/org-units")
+    public ResponseEntity<?> getUserOrgUnits(
+            @PathVariable("tenantId") String tenantId,
+            @PathVariable("userId") String userId
+    ) {
+        return ResponseEntity.ok(userOrgUnitService.getUserOrgUnits(userId));
+    }
+
+    @DeleteMapping("/{userId}/org-units/{orgUnitId}")
+    public ResponseEntity<?> removeOrgUnit(
+            @PathVariable("tenantId") String tenantId,
+            @PathVariable("userId") String userId,
+            @PathVariable("orgUnitId") String orgUnitId
+    ) {
+        userOrgUnitService.removeOrgUnit(userId, orgUnitId);
+        return ResponseEntity.noContent().build();
     }
 }

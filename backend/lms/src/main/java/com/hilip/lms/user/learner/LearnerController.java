@@ -16,4 +16,10 @@ public class LearnerController {
         var courses = learnerService.getAllEnrolledCourses(learnerId);
         return ResponseEntity.ok(courses);
     }
+
+    @GetMapping("/{learnerId}/available-courses")
+    public ResponseEntity<?> getAvailableCourses(@PathVariable("learnerId") String learnerId) {
+        var courses = learnerService.getAvailableCourses(learnerId);
+        return ResponseEntity.ok(courses);
+    }
 }
