@@ -13,7 +13,9 @@ public interface EnrollmentRepository extends JpaRepository<Enrollment, UUID>{
     @Query("""
             SELECT e.course FROM Enrollment e
             LEFT JOIN FETCH e.course.thumbnailFile
-            WHERE e.learner.id = :learnedId
+            WHERE e.learner.id = :learnerId
             """)
-    List<Course> findAllEnrolledCoursesByLearnerId(UUID learnedId);
+    List<Course> findAllEnrolledCoursesByLearnerId(UUID learnerId);
+
+    boolean existsByLearnerIdAndCourseId(UUID learnerId, UUID courseId);
 }

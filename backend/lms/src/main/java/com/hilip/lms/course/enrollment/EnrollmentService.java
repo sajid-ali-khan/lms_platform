@@ -18,11 +18,18 @@ public class EnrollmentService {
     private final UserRepository userRepository;
 
     public void addEnrollment(EnrollmentRequest request) {
-        var optionalCourse = courseRepository.findById(UUID.fromString(request.courseId()));
-        var optionalLearner = userRepository.findById(UUID.fromString(request.learnerId()));
+        UUID courseId = UUID.fromString(request.courseId());
+        UUID learnerId = UUID.fromString(request.learnerId());
+
+        var optionalCourse = courseRepository.findById(courseId);
+        var optionalLearner = userRepository.findById(learnerId);
 
         if (optionalCourse.isEmpty() || optionalLearner.isEmpty()){
-            throw new RuntimeException("Invalid course or users.");
+            throw new RuntimeException("Invalid course or user.");
+        }
+
+        if (enrollmentRepository.existsByLearnerIdAndCourseId(learnerId, courseId)) {
+            throw new RuntimeException("Already enrolled in this course.");
         }
 
         var newEnrollment = new Enrollment();
