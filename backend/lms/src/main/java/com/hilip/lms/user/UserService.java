@@ -4,6 +4,7 @@ import com.hilip.lms.shared.exceptions.DataAlreadyExistsException;
 import com.hilip.lms.shared.exceptions.ResourceNotFoundException;
 import com.hilip.lms.tenant.Tenant;
 import com.hilip.lms.tenant.TenantRepository;
+import com.hilip.lms.user.dto.ChangePasswordRequest;
 import com.hilip.lms.user.dto.CreateUserRequest;
 import com.hilip.lms.user.dto.UserResponse;
 
@@ -80,5 +81,39 @@ public class UserService {
                 user.getEmail(),
                 user.getRole().name()
         )).toList();
+    }
+
+    public void changePassword(String userId, ChangePasswordRequest request) {
+        User user = userRepository.findById(UUID.fromString(userId))
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + userId));
+
+        if (!passwordEncoder.matches(request.currentPassword(), user.getPasswordHash())) {
+            throw new IllegalArgumentException("Current password is incorrect");
+        }
+
+        if (request.newPassword() == null || request.newPassword().length() < 6) {
+            throw new IllegalArgumentException("New password must be at least 6 characters");
+        }
+
+        user.setPasswordHash(passwordEncoder.encode(request.newPassword()));
+        userRepository.save(user);
+        log.info("Password changed for user: {}", userId);
+    }
+
+    public void changePasswordByEmail(String email, ChangePasswordRequest request) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with email: " + email));
+
+        if (!passwordEncoder.matches(request.currentPassword(), user.getPasswordHash())) {
+            throw new IllegalArgumentException("Current password is incorrect");
+        }
+
+        if (request.newPassword() == null || request.newPassword().length() < 6) {
+            throw new IllegalArgumentException("New password must be at least 6 characters");
+        }
+
+        user.setPasswordHash(passwordEncoder.encode(request.newPassword()));
+        userRepository.save(user);
+        log.info("Password changed for user: {}", email);
     }
 }

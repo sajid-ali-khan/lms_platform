@@ -4,9 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.hilip.lms.user.UserService;
+import com.hilip.lms.user.dto.ChangePasswordRequest;
 
 import java.util.Map;
 
@@ -17,6 +21,7 @@ import java.util.Map;
 public class AuthController {
     private final AuthService authService;
     private final RefreshTokenService refreshTokenService;
+    private final UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<JwtResponse> authenticateUser(@RequestBody LoginRequest loginRequest) {
@@ -49,5 +54,18 @@ public class AuthController {
             return ResponseEntity.ok("Logged out successfully.");
         }
         return ResponseEntity.badRequest().body("Invalid refresh token.");
+    }
+
+    @PutMapping("/change-password")
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest request) {
+        var authentication = org.springframework.security.core.context.SecurityContextHolder.getContext().getAuthentication();
+        var jwt = (org.springframework.security.oauth2.jwt.Jwt) authentication.getPrincipal();
+        String email = jwt.getSubject();
+        try {
+            userService.changePasswordByEmail(email, request);
+            return ResponseEntity.ok(Map.of("message", "Password changed successfully"));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
     }
 }

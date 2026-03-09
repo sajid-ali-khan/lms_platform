@@ -9,8 +9,6 @@ import com.hilip.lms.user.UserRepository;
 import com.hilip.lms.user.userorgunit.dto.AssignOrgUnitRequest;
 import com.hilip.lms.user.userorgunit.dto.UserOrgUnitResponse;
 
-import com.hilip.lms.organization.orgunit.OrgUnit;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

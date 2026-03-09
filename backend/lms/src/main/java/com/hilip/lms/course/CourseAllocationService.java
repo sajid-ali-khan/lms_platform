@@ -7,8 +7,6 @@ import com.hilip.lms.organization.orgunit.OrgUnitRepository;
 import com.hilip.lms.shared.exceptions.DataAlreadyExistsException;
 import com.hilip.lms.shared.exceptions.ResourceNotFoundException;
 
-import com.hilip.lms.organization.orgunit.OrgUnit;
-
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
