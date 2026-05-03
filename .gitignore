@@ -1,2 +1,11 @@
 TODO.md
-frontend/
+PROJECT_DOCUMENTATION.md
+Project Documentation.pdf
+USER_MANUAL.md
+.env
+uploads/
+
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/node/
