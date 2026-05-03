@@ -4,6 +4,8 @@ Project Documentation.pdf
 USER_MANUAL.md
 .env
 uploads/
+target/
+.idea/
 
 frontend/node_modules/
 frontend/dist/
